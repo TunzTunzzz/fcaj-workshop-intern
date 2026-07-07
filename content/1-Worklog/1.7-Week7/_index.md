@@ -5,53 +5,28 @@ weight: 1
 chapter: false
 pre: " <b> 1.7. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
+
 
 
 ### Week 7 Objectives:
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+* Practice data security with encryption services (KMS, S3 encryption) and audit log tracking using CloudTrail and Athena.
+* Enhance IAM skills with complex permissions (IP and time boundaries).
+* Grasp concepts and practice deploying relational databases (Amazon RDS, Aurora) alongside application database architectures.
 
 ### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| Day | Task | Start Date | Completion Date | Reference Material |
+| --- | --- | --- | --- | --- |
+| 2 | Practice KMS, S3 encryption, CloudTrail, Athena, and sharing encrypted data on S3. | 01/06/2026 | 01/06/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=XPUfX9proJg&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=191) |
+| 3 | Practice IAM Group, IAM User, Admin Role, Switch Role, and limiting permissions by IP/time; practice IAM Role with EC2/S3. | 02/06/2026 | 02/06/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=j8Gj2DJtZUE&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=214) |
+| 4 | Learn database concepts, Amazon RDS, Aurora, Redshift, and ElastiCache. | 03/06/2026 | 03/06/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=OOD2RwWuLRw&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=217) |
+| 5 | Practice creating VPC, Security Group, DB Subnet Group, EC2, RDS, deploying applications, backup, and restore. | 04/06/2026 | 04/06/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=B5rOeWQWg1c&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=220) |
+| 6 | Practice connecting EC2/RDP, configuring SQL Server/Oracle sources, and converting schemas to Aurora MySQL. | 05/06/2026 | 05/06/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=cxwAOP1379s&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=229) |
 
 
 ### Week 7 Achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Successfully created and configured an AWS Free Tier account.
-
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Configured secure encryption on S3 using KMS and practiced querying CloudTrail system logs with Athena.
+* Successfully established IAM security boundaries based on IP addresses and access times.
+* Understood the AWS database ecosystem including RDS, Aurora, Redshift, and ElastiCache.
+* Fully deployed an application connecting to RDS/Aurora via VPC, DB Subnet Groups, Security Groups, and practiced data backup and restoration.

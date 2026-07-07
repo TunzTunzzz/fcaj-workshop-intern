@@ -9,23 +9,23 @@ pre: " <b> 5. </b> "
 ⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
 {{% /notice %}}
 
-# Secure Hybrid Access to S3 using VPC Endpoints
+# Practical Guide - DocuFlow AI
 
 #### Overview
 
-**AWS PrivateLink** provides private connectivity to AWS services from VPCs and your on-premises networks, without exposing your traffic to the Public Internet.
+In this workshop, we will build the **DocuFlow AI** solution – an intelligent invoice and document processing automation system on AWS.
 
-In this lab, you will learn how to create, configure, and test VPC endpoints that enable your workloads to reach AWS services without traversing the Public Internet.
-
-You will create two types of endpoints to access Amazon S3: a Gateway VPC endpoint, and an Interface VPC endpoint. These two types of VPC endpoints offer different benefits depending on if you are accessing Amazon S3 from the cloud or your on-premises location
-+ **Gateway** - Create a gateway endpoint to send traffic to Amazon S3 or DynamoDB using private IP addresses.You route traffic from your VPC to the gateway endpoint using route tables.
-+ **Interface** - Create an interface endpoint to send traffic to endpoint services that use a Network Load Balancer to distribute traffic. Traffic destined for the endpoint service is resolved using DNS.
+The system leverages serverless services including **Amazon S3**, **Amazon DynamoDB**, **AWS Lambda**, **Amazon SQS**, **Amazon EventBridge**, and **AWS Step Functions**, integrated with **Amazon Textract** and an external AI model to compile a complete, secure, and monitored data pipeline.
 
 #### Content
 
-1. [Workshop overview](5.1-Workshop-overview)
-2. [Prerequiste](5.2-Prerequiste/)
-3. [Access S3 from VPC](5.3-S3-vpc/)
-4. [Access S3 from On-premises](5.4-S3-onprem/)
-5. [VPC Endpoint Policies (Bonus)](5.5-Policy/)
-6. [Clean up](5.6-Cleanup/)
+1. [Workshop overview](5.1-introduction/)
+2. [Prerequisite](5.2-prerequisite/)
+3. [Prepare project foundation](5.3-prepare-project-foundation/)
+4. [Setup & run frontend](5.4-setup-and-run-frontend/)
+5. [Build AI processing workflow](5.5-ai-processing-workflow/)
+6. [Build document ingestion pipeline](5.6-document-ingestion-pipeline/)
+7. [Store result & review flow](5.7-store-result-review-flow/)
+8. [Observability, alerting & governance](5.8-observability-alerting-governance/)
+9. [End-to-end testing](5.9-end-to-end-testing/)
+10. [Clean up resources](5.10-clean-up/)

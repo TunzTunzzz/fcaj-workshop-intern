@@ -5,53 +5,28 @@ weight: 1
 chapter: false
 pre: " <b> 1.3. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
+
 
 
 ### Week 3 Objectives:
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+* Learn and practice advanced network routing concepts using AWS Transit Gateway.
+* Dive deep into Amazon EC2, various Storage types (EBS, Instance Store, EFS, FSx), and Auto Scaling mechanisms.
+* Become familiar with backup services (AWS Backup) and hybrid storage services (Storage Gateway).
 
 ### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| Day | Task | Start Date | Completion Date | Reference Material |
+| --- | --- | --- | --- | --- |
+| 2 | Learn and practice AWS Transit Gateway, Attachment, Route Table, and routing between multiple VPCs. | 04/05/2026 | 04/05/2026 | [AWS Study Group](https://000020.awsstudygroup.com/) |
+| 3 | Learn about Amazon EC2, Instance Type, AMI, Backup, Key Pair, EBS, and Instance Store. | 05/05/2026 | 05/05/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=-t5h4N6vfBs&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=72) |
+| 4 | Learn about User Data, Metadata, EC2 Auto Scaling, EFS, FSx, Lightsail, and Application Migration Service. | 06/05/2026 | 06/05/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=_v_43Wi7zjo&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=77) |
+| 5 | Practice deploying AWS Backup, creating Backup Plan, and testing data recovery. | 07/05/2026 | 07/05/2026 | [AWS Study Group](https://000013.awsstudygroup.com/) |
+| 6 | Practice creating S3 Bucket, EC2 for Storage Gateway, creating Storage Gateway, and File Shares. | 08/05/2026 | 08/05/2026 | [AWS Study Group](https://000024.awsstudygroup.com/) |
 
 
 ### Week 3 Achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Successfully created and configured an AWS Free Tier account.
-
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Successfully configured and routed traffic between multiple VPCs using AWS Transit Gateway.
+* Understood and differentiated storage options for EC2 such as EBS and Instance Store, as well as the use of AMIs and Key Pairs.
+* Learned how to use User Data, Metadata, and set up EC2 Auto Scaling.
+* Successfully practiced creating a Backup Plan for data recovery with AWS Backup and established File Shares using Storage Gateway.

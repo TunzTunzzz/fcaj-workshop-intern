@@ -5,122 +5,32 @@ weight: 1
 chapter: false
 pre: " <b> 3.4. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
+## BUILDING A MULTI-ACCOUNT PATCH COMPLIANCE DASHBOARD WITH KIRO SPECS
 
-# Getting Started with Healthcare Data Lakes: Using Microservices
+**Posted by:** Hoang Trong Tra 
 
-Data lakes can help hospitals and healthcare facilities turn data into business insights, maintain business continuity, and protect patient privacy. A **data lake** is a centralized, managed, and secure repository to store all your data, both in its raw and processed forms for analysis. Data lakes allow you to break down data silos and combine different types of analytics to gain insights and make better business decisions.
+**AWS Study Group Posting Date:** June 18, 2026
 
-This blog post is part of a larger series on getting started with setting up a healthcare data lake. In my final post of the series, *“Getting Started with Healthcare Data Lakes: Diving into Amazon Cognito”*, I focused on the specifics of using Amazon Cognito and Attribute Based Access Control (ABAC) to authenticate and authorize users in the healthcare data lake solution. In this blog, I detail how the solution evolved at a foundational level, including the design decisions I made and the additional features used. You can access the code samples for the solution in this Git repo for reference.
+When a system only has a few EC2 instances or a couple of AWS accounts, checking which machines have been patched and which ones are missing patches can be done manually. But as the environment scales out to multiple accounts, multiple Regions, and various workloads, tracking patch compliance begins to become much more difficult to control.
+This AWS Blog caught my attention because it doesn't just talk about creating a dashboard; it also shows how to build that dashboard following a very systematic process using Kiro Specs.
 
----
+The core idea of the solution is: patch compliance data from AWS Systems Manager Patch Manager will be exported to Amazon S3 via Resource Data Sync. Then, a Lambda function running periodically will read this raw data, aggregate it into JSON cache files, and the dashboard simply reads the pre-processed data to display faster.
 
-## Architecture Guidance
+![Architecture Diagram](/images/3-BlogsTranslated/3.4-Blog4/architecture.jpg)
 
-The main change since the last presentation of the overall architecture is the decomposition of a single service into a set of smaller services to improve maintainability and flexibility. Integrating a large volume of diverse healthcare data often requires specialized connectors for each format; by keeping them encapsulated separately as microservices, we can add, remove, and modify each connector without affecting the others. The microservices are loosely coupled via publish/subscribe messaging centered in what I call the “pub/sub hub.”
+### I noticed a few notable points:
 
-This solution represents what I would consider another reasonable sprint iteration from my last post. The scope is still limited to the ingestion and basic parsing of **HL7v2 messages** formatted in **Encoding Rules 7 (ER7)** through a REST interface.
+* **First**, this dashboard is not exposed to the public Internet. Users access it via AWS Systems Manager Session Manager port forwarding to an internal Application Load Balancer. This approach makes the system safer since it doesn't require opening a public endpoint for a dashboard containing internal compliance information.
+* **Second**, the solution clearly separates the source data and the data serving the dashboard. The Resource Data Sync bucket is just a place to hold the raw data. The dashboard uses a separate S3 bucket to store frontend assets and the aggregated cache. As a result, the dashboard doesn't have to read thousands of raw files every time a user opens the page.
+* **Third**, the serverless architecture is quite reasonable. Lambda handles the frontend, API, and cache aggregation; EventBridge triggers the Lambda to update the cache every 30 minutes; ALB routes internal requests to Lambda. This method reduces server operations while fitting the needs of a dashboard that doesn't always have continuous traffic.
+* **Fourth**, the dashboard is designed in two layers. The first layer shows the big picture such as total instances, compliance rate, compliant/non-compliant machines count, categorized by platform and severity. When a deeper look is needed, users can drill down into each account to know exactly which instance is missing patches and which specific patches are missing.
 
-**The solution architecture is now as follows:**
+The part I found best is how the article utilizes Kiro Specs. Instead of just asking AI to write code immediately, Kiro follows the process Requirements -> Design -> Tasks. This means having to clearly define what to build first, then designing the architecture and data flow, before dividing it into deployment tasks.
+This approach helps AI guess less. Especially with security-related systems like a compliance dashboard, if not specified clearly from the start, AI might create an inappropriate design, like opening public endpoints or processing data sub-optimally.
+The article also uses steering files to retain context for Kiro, for instance architecture.md, data-schemas.md, compliance-logic.md, frontend-specs.md, and security.md. As I understand it, this is like writing down the "rules of the game" for the project so that AI always sticks to them when generating requirements, design, or code.
 
-> *Figure 1. Overall architecture; colored boxes represent distinct services.*
+What I learned after reading this article is: a well-operated dashboard does not only lie in a beautiful interface or clear charts. The more critical part is where the data comes from, how it is processed, whether access permissions are safe, and if the architecture is easily scalable when the number of accounts increases.
 
----
+**Original article:** [https://aws.amazon.com/.../build-a-multi-account-patch.../](https://aws.amazon.com/.../build-a-multi-account-patch.../)
 
-While the term *microservices* has some inherent ambiguity, certain traits are common:  
-- Small, autonomous, loosely coupled  
-- Reusable, communicating through well-defined interfaces  
-- Specialized to do one thing well  
-- Often implemented in an **event-driven architecture**
-
-When determining where to draw boundaries between microservices, consider:  
-- **Intrinsic**: technology used, performance, reliability, scalability  
-- **Extrinsic**: dependent functionality, rate of change, reusability  
-- **Human**: team ownership, managing *cognitive load*
-
----
-
-## Technology Choices and Communication Scope
-
-| Communication scope                       | Technologies / patterns to consider                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Within a single microservice              | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Between microservices in a single service | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Between services                          | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
-
----
-
-## The Pub/Sub Hub
-
-Using a **hub-and-spoke** architecture (or message broker) works well with a small number of tightly related microservices.  
-- Each microservice depends only on the *hub*  
-- Inter-microservice connections are limited to the contents of the published message  
-- Reduces the number of synchronous calls since pub/sub is a one-way asynchronous *push*
-
-Drawback: **coordination and monitoring** are needed to avoid microservices processing the wrong message.
-
----
-
-## Core Microservice
-
-Provides foundational data and communication layer, including:  
-- **Amazon S3** bucket for data  
-- **Amazon DynamoDB** for data catalog  
-- **AWS Lambda** to write messages into the data lake and catalog  
-- **Amazon SNS** topic as the *hub*  
-- **Amazon S3** bucket for artifacts such as Lambda code
-
-> Only allow indirect write access to the data lake through a Lambda function → ensures consistency.
-
----
-
-## Front Door Microservice
-
-- Provides an API Gateway for external REST interaction  
-- Authentication & authorization based on **OIDC** via **Amazon Cognito**  
-- Self-managed *deduplication* mechanism using DynamoDB instead of SNS FIFO because:  
-  1. SNS deduplication TTL is only 5 minutes  
-  2. SNS FIFO requires SQS FIFO  
-  3. Ability to proactively notify the sender that the message is a duplicate  
-
----
-
-## Staging ER7 Microservice
-
-- Lambda “trigger” subscribed to the pub/sub hub, filtering messages by attribute  
-- Step Functions Express Workflow to convert ER7 → JSON  
-- Two Lambdas:  
-  1. Fix ER7 formatting (newline, carriage return)  
-  2. Parsing logic  
-- Result or error is pushed back into the pub/sub hub  
-
----
-
-## New Features in the Solution
-
-### 1. AWS CloudFormation Cross-Stack References
-Example *outputs* in the core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+*If you are managing multiple AWS accounts, what would you prioritize first: aggregating compliance data, securing dashboard access, or automated alerts when an instance misses a patch?*

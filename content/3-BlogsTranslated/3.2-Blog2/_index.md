@@ -5,122 +5,54 @@ weight: 1
 chapter: false
 pre: " <b> 3.2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
+## Building a Smart Retry Mechanism for Serverless Queue Consumer on AWS
 
-# Getting Started with Healthcare Data Lakes: Using Microservices
+**Author:** Lam Quang Loc
 
-Data lakes can help hospitals and healthcare facilities turn data into business insights, maintain business continuity, and protect patient privacy. A **data lake** is a centralized, managed, and secure repository to store all your data, both in its raw and processed forms for analysis. Data lakes allow you to break down data silos and combine different types of analytics to gain insights and make better business decisions.
+**AWS Study Group Posting Date:** June 10, 2026
 
-This blog post is part of a larger series on getting started with setting up a healthcare data lake. In my final post of the series, *“Getting Started with Healthcare Data Lakes: Diving into Amazon Cognito”*, I focused on the specifics of using Amazon Cognito and Attribute Based Access Control (ABAC) to authenticate and authorize users in the healthcare data lake solution. In this blog, I detail how the solution evolved at a foundational level, including the design decisions I made and the additional features used. You can access the code samples for the solution in this Git repo for reference.
+In a serverless architecture, Lambda functions often act as "consumers" of messages from an SQS queue, and then interact with downstream services or external APIs. The problem is: when a downstream service experiences a temporary error or gets throttled, how do we handle retries intelligently?
 
----
+### Solution Architecture
+The core trio of services: Lambda + SQS + EventBridge Scheduler
 
-## Architecture Guidance
+![Architecture Diagram](/images/3-BlogsTranslated/3.2-Blog2/architecture_blog2.png)
 
-The main change since the last presentation of the overall architecture is the decomposition of a single service into a set of smaller services to improve maintainability and flexibility. Integrating a large volume of diverse healthcare data often requires specialized connectors for each format; by keeping them encapsulated separately as microservices, we can add, remove, and modify each connector without affecting the others. The microservices are loosely coupled via publish/subscribe messaging centered in what I call the “pub/sub hub.”
+The workflow is as follows:
+1. Lambda consumes messages from SQS and processes them.
+2. If an error occurs → Lambda raises a specific exception.
+3. Catch block catches the exception → calls the EventBridge Scheduler API to create a schedule.
+4. This schedule will push the message back to SQS at a specific time in the future.
+5. If the message has exceeded the maximum number of retries → send it to a Dead Letter Queue (DLQ) for manual processing later.
 
-This solution represents what I would consider another reasonable sprint iteration from my last post. The scope is still limited to the ingestion and basic parsing of **HL7v2 messages** formatted in **Encoding Rules 7 (ER7)** through a REST interface.
+The beauty of this is that retry logic is completely separated from business logic, making the Lambda function lightweight and easier to maintain.
 
-**The solution architecture is now as follows:**
+### Solution Highlights
+* Precise retry timing control: Supports multiple strategies like exponential backoff or linear retry intervals, depending on the error type or previous attempt count.
+* Tracking retries via message attributes: For each retry, a timestamp is appended to an array in the message body. When the retry limit is exceeded → automatically routes to DLQ to prevent infinite retries.
+* DLQ Integration: Failed messages are kept separate for review, reprocessing, or debugging later, avoiding "polluting" the main queue.
 
-> *Figure 1. Overall architecture; colored boxes represent distinct services.*
+### Implementation Considerations
+* Partial failure: If only part of a message is processed, compensating actions or rollbacks are needed to avoid data inconsistency downstream.
+* Reasonable retry limits: Too many retries = wasted costs + potential system slowdowns. Consider based on SLAs, error frequency, and business impact.
+* EventBridge Scheduler latency: The scheduler has a minimum granularity of 1 minute, plus latency from queue to Lambda. This is not a real-time mechanism; adjust if your application is highly time-sensitive.
+* Security (IAM least privilege): The Lambda role only needs permissions to create EventBridge schedules and `iam:PassRole`. The Scheduler role only needs permission to send messages to the source queue. If the downstream service is in a VPC → use AWS PrivateLink for Lambda to securely access EventBridge Scheduler.
+* Scaling: Monitor Lambda concurrency and the queue's retention period to optimize performance and cost.
 
----
+### Monitoring
+Metrics to monitor on CloudWatch:
+* Number of Lambda invocations and error rate
+* Lambda runtime
+* Volume of messages in DLQ
 
-While the term *microservices* has some inherent ambiguity, certain traits are common:  
-- Small, autonomous, loosely coupled  
-- Reusable, communicating through well-defined interfaces  
-- Specialized to do one thing well  
-- Often implemented in an **event-driven architecture**
+You should set up CloudWatch Alarms to alert or trigger automated actions when metrics exceed thresholds. Log retry attempts, message attributes, and errors in detail for easy debugging.
 
-When determining where to draw boundaries between microservices, consider:  
-- **Intrinsic**: technology used, performance, reliability, scalability  
-- **Extrinsic**: dependent functionality, rate of change, reusability  
-- **Human**: team ownership, managing *cognitive load*
+### Future Enhancements
+* Dynamic retry interval: Automatically adjust retry times based on error types or downstream service health status in real-time, instead of using a fixed backoff scheme.
+* Centralized retry config: Integrate with DynamoDB or AWS Systems Manager Parameter Store to manage retry strategies centrally without redeploying Lambda for config changes.
+* Advanced error analytics: Analyze error patterns and correlate with downstream service health to proactively detect and handle incidents.
 
----
+### Conclusion
+This pattern is suitable for any stateless queue consumer, not just Lambda. It allows building fault-tolerant serverless systems, gracefully handling issues in downstream services without adding complex state management services. This is a beautiful example of combining AWS managed services to solve practical problems simply and efficiently.
 
-## Technology Choices and Communication Scope
-
-| Communication scope                       | Technologies / patterns to consider                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Within a single microservice              | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Between microservices in a single service | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Between services                          | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
-
----
-
-## The Pub/Sub Hub
-
-Using a **hub-and-spoke** architecture (or message broker) works well with a small number of tightly related microservices.  
-- Each microservice depends only on the *hub*  
-- Inter-microservice connections are limited to the contents of the published message  
-- Reduces the number of synchronous calls since pub/sub is a one-way asynchronous *push*
-
-Drawback: **coordination and monitoring** are needed to avoid microservices processing the wrong message.
-
----
-
-## Core Microservice
-
-Provides foundational data and communication layer, including:  
-- **Amazon S3** bucket for data  
-- **Amazon DynamoDB** for data catalog  
-- **AWS Lambda** to write messages into the data lake and catalog  
-- **Amazon SNS** topic as the *hub*  
-- **Amazon S3** bucket for artifacts such as Lambda code
-
-> Only allow indirect write access to the data lake through a Lambda function → ensures consistency.
-
----
-
-## Front Door Microservice
-
-- Provides an API Gateway for external REST interaction  
-- Authentication & authorization based on **OIDC** via **Amazon Cognito**  
-- Self-managed *deduplication* mechanism using DynamoDB instead of SNS FIFO because:  
-  1. SNS deduplication TTL is only 5 minutes  
-  2. SNS FIFO requires SQS FIFO  
-  3. Ability to proactively notify the sender that the message is a duplicate  
-
----
-
-## Staging ER7 Microservice
-
-- Lambda “trigger” subscribed to the pub/sub hub, filtering messages by attribute  
-- Step Functions Express Workflow to convert ER7 → JSON  
-- Two Lambdas:  
-  1. Fix ER7 formatting (newline, carriage return)  
-  2. Parsing logic  
-- Result or error is pushed back into the pub/sub hub  
-
----
-
-## New Features in the Solution
-
-### 1. AWS CloudFormation Cross-Stack References
-Example *outputs* in the core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+Original article link: [https://aws.amazon.com/vi/blogs/architecture/create-a-serverless-custom-retry-mechanism-for-stateless-queue-consumers/](https://aws.amazon.com/vi/blogs/architecture/create-a-serverless-custom-retry-mechanism-for-stateless-queue-consumers/)

@@ -5,55 +5,30 @@ weight: 1
 chapter: false
 pre: " <b> 1.2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+
 
 
 ### Mục tiêu tuần 2:
 
-* Kết nối, làm quen với các thành viên trong First Cloud Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+* Tìm hiểu sâu về Amazon VPC, bảo mật trong VPC, Multi-VPC, VPN, Direct Connect và Load Balancer.
+* Nắm vững cách thiết lập mạng cơ sở thông qua thực hành cấu hình Subnet, Route Table, Internet/NAT Gateway.
+* Hiểu rõ cơ chế bảo mật mạng và cách cấu hình Hybrid DNS, VPC Peering.
 
 ### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+| --- | --- | --- | --- | --- |
+| 2 | Tìm hiểu Amazon VPC, bảo mật trong VPC, Multi-VPC, VPN, Direct Connect và Load Balancer. | 27/04/2026 | 27/04/2026 | [Xem&nbsp;Youtube](https://www.youtube.com/watch?v=O9Ac_vGHquM&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=25) |
+| 3 | Thực hành cấu hình Subnet, Route Table, Internet Gateway và NAT Gateway trong Amazon VPC. | 28/04/2026 | 28/04/2026 | [AWS Study Group](https://000003.awsstudygroup.com/) |
+| 4 | Thực hành Security Group, Network ACL, VPC Resource Map, tạo EC2 trong Subnet và kiểm tra kết nối. | 29/04/2026 | 29/04/2026 | [AWS Study Group](https://000003.awsstudygroup.com/) |
+| 5 | Tìm hiểu và thực hành cấu hình Hybrid DNS với Route 53 Resolver, Outbound/Inbound Endpoint và Resolver Rules. | 30/04/2026 | 30/04/2026 | [AWS Study Group](https://000010.awsstudygroup.com/) |
+| 6 | Thực hành VPC Peering, cấu hình NACL, Route Table, Cross-Peer DNS và dọn dẹp tài nguyên. | 01/05/2026 | 01/05/2026 | [AWS Study Group](https://000019.awsstudygroup.com/) |
 
 
 ### Kết quả đạt được tuần 2:
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
+* Nắm được kiến trúc và cách hoạt động của Amazon VPC, bảo mật mạng VPC và các kết nối mở rộng (VPN, Direct Connect).
+* Triển khai thành công Subnet, Route Table, Internet Gateway, và NAT Gateway.
+* Hoàn thành việc tạo EC2 trong Subnet an toàn, kiểm tra kết nối với Security Group và Network ACL.
+* Cấu hình thành công Hybrid DNS với Route 53 và kết nối VPC Peering.
 
 

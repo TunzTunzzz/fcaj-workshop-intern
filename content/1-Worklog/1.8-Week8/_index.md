@@ -5,53 +5,28 @@ weight: 1
 chapter: false
 pre: " <b> 1.8. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
+
 
 
 ### Week 8 Objectives:
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+* Learn to convert and migrate databases to the cloud via Migration Tasks (DMS).
+* Build a complete data processing pipeline using S3, Kinesis, Glue, Athena, and visualize it with QuickSight.
+* Master knowledge and practice with Amazon DynamoDB, and become familiar with specialized data processing services like DataBrew and EMR.
 
 ### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| Day | Task | Start Date | Completion Date | Reference Material |
+| --- | --- | --- | --- | --- |
+| 2 | Practice Migration Task, Endpoint, Serverless Migration, Event Notification, Logs, and handling migration errors. | 08/06/2026 | 08/06/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=4LoLN6D1UU8&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=239) |
+| 3 | Practice data pipeline with S3, Kinesis Data Firehose, Glue Crawler, Athena, and QuickSight. | 09/06/2026 | 09/06/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=uYCW51_pBBA&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=246) |
+| 4 | Learn and practice Amazon DynamoDB: console, backup, advanced design patterns, and serverless event-driven architecture. | 10/06/2026 | 10/06/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=w5bqLYPv6DA&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=257) |
+| 5 | Practice building databases, checking data, costs, cost allocation tags, usage; using CloudShell, Console, SDK, and Cloud9. | 11/06/2026 | 11/06/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=nSTriu7uWu0&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=265) |
+| 6 | Practice DataBrew, ingest/store, catalog, transform data with Glue/EMR; analyze with Athena/Kinesis, visualize with QuickSight, Lambda, Redshift, and dashboards. | 12/06/2026 | 12/06/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=rFr23_roN1s&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=276) |
 
 
 ### Week 8 Achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Successfully created and configured an AWS Free Tier account.
-
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Successfully practiced database migration (Serverless Migration) and handled troubleshooting during the migration process.
+* Configured and smoothly operated a real-time data pipeline using Kinesis Data Firehose, Glue Crawler, and Athena.
+* Successfully built and interacted with the NoSQL database Amazon DynamoDB via the Console and SDK.
+* Proficiently applied DataBrew and Glue/EMR for data transformation, and used QuickSight to create visual reporting dashboards.

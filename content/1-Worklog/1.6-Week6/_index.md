@@ -5,53 +5,28 @@ weight: 1
 chapter: false
 pre: " <b> 1.6. </b> "
 ---
-{{% notice warning %}} 
-⚠️ **Note:** The following information is for reference purposes only. Please **do not copy verbatim** for your own report, including this warning.
-{{% /notice %}}
+
 
 
 ### Week 6 Objectives:
 
-* Connect and get acquainted with members of First Cloud Journey.
-* Understand basic AWS services, how to use the console & CLI.
+* Deep dive into advanced security management and practice enabling AWS Security Hub.
+* Learn to automate infrastructure management tasks (start/stop EC2) using AWS Lambda, IAM Roles, and webhooks.
+* Master resource management strategies (Tagging, Resource Groups) and detailed access boundaries using IAM.
 
 ### Tasks to be carried out this week:
-| Day | Task                                                                                                                                                                                                   | Start Date | Completion Date | Reference Material                        |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------- | ----------------------------------------- |
-| 2   | - Get acquainted with FCJ members <br> - Read and take note of internship unit rules and regulations                                                                                                   | 08/11/2025 | 08/11/2025      |
-| 3   | - Learn about AWS and its types of services <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                              | 08/12/2025 | 08/12/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Create AWS Free Tier account <br> - Learn about AWS Console & AWS CLI <br> - **Practice:** <br>&emsp; + Create AWS account <br>&emsp; + Install & configure AWS CLI <br> &emsp; + How to use AWS CLI | 08/13/2025 | 08/13/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Learn basic EC2: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - SSH connection methods to EC2 <br> - Learn about Elastic IP   <br>                            | 08/14/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Practice:** <br>&emsp; + Launch an EC2 instance <br>&emsp; + Connect via SSH <br>&emsp; + Attach an EBS volume                                                                                     | 08/15/2025 | 08/15/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| Day | Task | Start Date | Completion Date | Reference Material |
+| --- | --- | --- | --- | --- |
+| 2 | Learn supplementary practical/research content on security and practice enabling AWS Security Hub. | 25/05/2026 | 25/05/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=YnLo4MgOXyA&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=158) |
+| 3 | Practice automatically starting/stopping EC2 using Lambda, IAM Role, Tags, and Slack Webhook. | 26/05/2026 | 26/05/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=esPRIj_zZSQ&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=161) |
+| 4 | Practice managing Tags, filtering resources by tag, using CLI with tags, and creating Resource Groups. | 27/05/2026 | 27/05/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=ZQsPVBH8m78&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=171) |
+| 5 | Practice creating IAM User, Policy, Role, Switch Role, and checking EC2 access permissions by Region/Tag. | 28/05/2026 | 28/05/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=vkBJ0Cxc6Nw&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=177) |
+| 6 | Practice creating IAM permission boundaries, limited-permission users, and testing access limits. | 29/05/2026 | 29/05/2026 | [Watch&nbsp;Youtube](https://www.youtube.com/watch?v=MDDYZKU4i6Y&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=187) |
 
 
 ### Week 6 Achievements:
 
-* Understood what AWS is and mastered the basic service groups: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
-
-* Successfully created and configured an AWS Free Tier account.
-
-* Became familiar with the AWS Management Console and learned how to find, access, and use services via the web interface.
-
-* Installed and configured AWS CLI on the computer, including:
-  * Access Key
-  * Secret Key
-  * Default Region
-  * ...
-
-* Used AWS CLI to perform basic operations such as:
-
-  * Check account & configuration information
-  * Retrieve the list of regions
-  * View EC2 service
-  * Create and manage key pairs
-  * Check information about running services
-  * ...
-
-* Acquired the ability to connect between the web interface and CLI to manage AWS resources in parallel.
-* ...
+* Successfully enabled and configured AWS Security Hub to monitor the overall security posture.
+* Built an automated start/stop EC2 mechanism using Lambda, integrating notifications via Slack Webhook.
+* Managed resources more professionally by creating Resource Groups and using AWS CLI with Tag filters.
+* Successfully deployed advanced IAM policies, IAM Roles, Switch Roles, and tested access boundaries based on Regions and Tags.

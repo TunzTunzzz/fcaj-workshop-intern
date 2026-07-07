@@ -6,121 +6,36 @@ chapter: false
 pre: " <b> 4.1. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy it verbatim** into your report, including this warning.
-{{% /notice %}}
+# EVENT RECAP: FCAJ COMMUNITY DAY (MAY 09, 2026)
 
-# Summary Report: “GenAI-powered App-DB Modernization workshop”
+### Event Overview
+This meetup was designed specifically for tech enthusiasts, particularly those interested in Cloud and software development. It served as a fantastic platform for sharing industry insights, offering career guidance to students and freshers, and fostering a supportive environment where young professionals could practice public speaking and share ideas without hesitation.
 
-### Event Objectives
+### Speakers and Topics
+- **Mr. Huynh Hoang Long**: Shared psychological tricks to "hack" the brain and sustain motivation for learning.
+- **Mr. Nguyen Tuan Thinh**: Guided the audience through Prompt Engineering and building Serverless architectures on AWS.
+- **Mr. Khang (Cloud Kinetics)**: Offered career advice and discussed the essential mindset for thriving in the AI era.
+- **Ms. Thao (VIB)**: Revealed practical methodologies for integrating AI into the software development lifecycle.
 
-- Share best practices in modern application design
-- Introduce Domain-Driven Design (DDD) and event-driven architecture
-- Provide guidance on selecting the right compute services
-- Present AI tools to support the development lifecycle
+### Core Highlights
+1. **Hacking your brain to enjoy learning**: By understanding how Dopamine works, we can adopt strategies like breaking down tasks (e.g., studying one AWS service per day), setting up personal reward systems, tracking learning streaks, and utilizing the 2-minute rule.
+2. **Mastering Prompts & AWS**: To prevent AI from hallucinating, it is crucial to specify roles, contexts, and expected output formats. The session also featured a live demo of a Serverless project utilizing S3, Lambda, DynamoDB, and Bedrock.
+3. **Navigating a career with AI**: AI acts as a capability amplifier rather than a human replacement. It makes skilled engineers exceptionally better while exposing those lacking foundational knowledge. Integrity and a strong analytical mindset (always asking "Why?") are more important than ever.
+4. **The BMX approach in programming**: Instead of having AI write code immediately—which often leads to poor quality—this method assigns roles (PM, Developer, Architect) to AI, forcing it to write documentation first before generating code in small, manageable chunks.
 
-### Speakers
+### Personal Takeaways
+- **Mindset shift**: Laziness often stems from a lack of immediate rewards rather than inherent traits. Employers highly value candidates who possess strong foundational knowledge and can articulate the reasoning behind their technical decisions.
+- **Soft skills development**: Embracing challenges, allowing oneself to make mistakes, maintaining integrity, and focusing on long-term career goals are vital for professional growth.
+- **Technical growth**: Learned how to systematically divide project workflows to prevent AI from losing its context window.
 
-- **Jignesh Shah** – Director, Open Source Databases
-- **Erica Liu** – Sr. GTM Specialist, AppMod
-- **Fabrianne Effendi** – Assc. Specialist SA, Serverless Amazon Web Services
+### Action Plan
+- **Building discipline**: I will track my daily learning streaks and implement a self-reward system to avoid burnout while learning new technologies. Tasks taking less than 2 minutes will be done immediately.
+- **Communicating effectively with AI**: I plan to strictly follow the prompt formula (Role + Task + Context + Format + Constraint) for better results in my daily coding and writing tasks.
+- **Smarter code management**: I will adopt the BMX methodology by writing clear documentation and breaking down requirements (Epics/Stories) before utilizing tools like Copilot or Cursor.
 
-### Key Highlights
-
-#### Identifying the drawbacks of legacy application architecture
-
-- Long product release cycles → Lost revenue/missed opportunities  
-- Inefficient operations → Reduced productivity, higher costs  
-- Non-compliance with security regulations → Security breaches, loss of reputation  
-
-#### Transitioning to modern application architecture – Microservices
-
-Migrating to a modular system — each function is an **independent service** communicating via **events**, built on three core pillars:
-
-- **Queue Management**: Handle asynchronous tasks  
-- **Caching Strategy**: Optimize performance  
-- **Message Handling**: Flexible inter-service communication  
-
-#### Domain-Driven Design (DDD)
-
-- **Four-step method**: Identify domain events → arrange timeline → identify actors → define bounded contexts  
-- **Bookstore case study**: Demonstrates real-world DDD application  
-- **Context mapping**: 7 patterns for integrating bounded contexts  
-
-#### Event-Driven Architecture
-
-- **3 integration patterns**: Publish/Subscribe, Point-to-point, Streaming  
-- **Benefits**: Loose coupling, scalability, resilience  
-- **Sync vs async comparison**: Understanding the trade-offs  
-
-#### Compute Evolution
-
-- **Shared Responsibility Model**: EC2 → ECS → Fargate → Lambda  
-- **Serverless benefits**: No server management, auto-scaling, pay-for-value  
-- **Functions vs Containers**: Criteria for appropriate choice  
-
-#### Amazon Q Developer
-
-- **SDLC automation**: From planning to maintenance  
-- **Code transformation**: Java upgrade, .NET modernization  
-- **AWS Transform agents**: VMware, Mainframe, .NET migration  
-
-### Key Takeaways
-
-#### Design Mindset
-
-- **Business-first approach**: Always start from the business domain, not the technology  
-- **Ubiquitous language**: Importance of a shared vocabulary between business and tech teams  
-- **Bounded contexts**: Identifying and managing complexity in large systems  
-
-#### Technical Architecture
-
-- **Event storming technique**: Practical method for modeling business processes  
-- Use **event-driven communication** instead of synchronous calls  
-- **Integration patterns**: When to use sync, async, pub/sub, streaming  
-- **Compute spectrum**: Criteria for choosing between VM, containers, and serverless  
-
-#### Modernization Strategy
-
-- **Phased approach**: No rushing — follow a clear roadmap  
-- **7Rs framework**: Multiple modernization paths depending on the application  
-- **ROI measurement**: Cost reduction + business agility  
-
-### Applying to Work
-
-- **Apply DDD** to current projects: Event storming sessions with business teams  
-- **Refactor microservices**: Use bounded contexts to define service boundaries  
-- **Implement event-driven patterns**: Replace some sync calls with async messaging  
-- **Adopt serverless**: Pilot AWS Lambda for suitable use cases  
-- **Try Amazon Q Developer**: Integrate into the dev workflow to boost productivity  
-
-### Event Experience
-
-Attending the **“GenAI-powered App-DB Modernization”** workshop was extremely valuable, giving me a comprehensive view of modernizing applications and databases using advanced methods and tools. Key experiences included:
-
-#### Learning from highly skilled speakers
-- Experts from AWS and major tech organizations shared **best practices** in modern application design.  
-- Through real-world case studies, I gained a deeper understanding of applying **DDD** and **Event-Driven Architecture** to large projects.  
-
-#### Hands-on technical exposure
-- Participating in **event storming** sessions helped me visualize how to **model business processes** into domain events.  
-- Learned how to **split microservices** and define **bounded contexts** to manage large-system complexity.  
-- Understood trade-offs between **synchronous and asynchronous communication** and integration patterns like **pub/sub, point-to-point, streaming**.  
-
-#### Leveraging modern tools
-- Explored **Amazon Q Developer**, an AI tool for SDLC support from planning to maintenance.  
-- Learned to **automate code transformation** and pilot serverless with **AWS Lambda** to improve productivity.  
-
-#### Networking and discussions
-- The workshop offered opportunities to exchange ideas with experts, peers, and business teams, enhancing the **ubiquitous language** between business and tech.  
-- Real-world examples reinforced the importance of the **business-first approach** rather than focusing solely on technology.  
-
-#### Lessons learned
-- Applying DDD and event-driven patterns reduces **coupling** while improving **scalability** and **resilience**.  
-- Modernization requires a **phased approach** with **ROI measurement**; rushing the process can be risky.  
-- AI tools like Amazon Q Developer can significantly **boost productivity** when integrated into the current workflow.  
-
-#### Some event photos
-*Add your event photos here*  
-
-> Overall, the event not only provided technical knowledge but also helped me reshape my thinking about application design, system modernization, and cross-team collaboration.
+### Event Photos
+![Event image 0](/images/4-EventParticipated/4.1-Event1/image1.png)
+![Event image 1](/images/4-EventParticipated/4.1-Event1/image2.png)
+![Event image 2](/images/4-EventParticipated/4.1-Event1/image3.png)
+![Event image 3](/images/4-EventParticipated/4.1-Event1/image4.png)
+![Event image 4](/images/4-EventParticipated/4.1-Event1/image5.png)

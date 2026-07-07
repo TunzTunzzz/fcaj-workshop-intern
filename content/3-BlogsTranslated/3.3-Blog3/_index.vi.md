@@ -5,123 +5,43 @@ weight: 1
 chapter: false
 pre: " <b> 3.3. </b> "
 ---
+## Cách ALS GeoAnalytics LITHOLENS™ Cách Mạng Hóa Việc Ghi Chép Mẫu Lõi Khoan Bằng Machine Learning Trên Amazon EKS
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+**Được đăng bởi:** Phạm Tùng Dương
 
-# Bắt đầu với healthcare data lakes: Sử dụng microservices
+**Ngày đăng bài trên AWS Study Group:** Ngày 18 tháng 6 năm 2026
 
-Các data lake có thể giúp các bệnh viện và cơ sở y tế chuyển dữ liệu thành những thông tin chi tiết về doanh nghiệp và duy trì hoạt động kinh doanh liên tục, đồng thời bảo vệ quyền riêng tư của bệnh nhân. **Data lake** là một kho lưu trữ tập trung, được quản lý và bảo mật để lưu trữ tất cả dữ liệu của bạn, cả ở dạng ban đầu và đã xử lý để phân tích. data lake cho phép bạn chia nhỏ các kho chứa dữ liệu và kết hợp các loại phân tích khác nhau để có được thông tin chi tiết và đưa ra các quyết định kinh doanh tốt hơn.
+Trong ngành khai thác khoáng sản, việc phân tích địa chất chính xác là yếu tố then chốt để cải thiện thiết kế và phát triển mỏ. Theo phương pháp truyền thống, quy trình này đòi hỏi các chuyên gia phải kiểm tra trực tiếp các mẫu lõi khoan tại hiện trường—thường là những khu vực xa xôi và khắc nghiệt—vốn rất tốn thời gian và công sức.
+Để giải quyết vấn đề này, ALS GeoAnalytics đã phát triển nền tảng LITHOLENS™. Đây là một hệ thống ứng dụng Machine Learning (ML) và thị giác máy tính để tự động hóa quy trình ghi chép mẫu lõi, giúp tăng cường tính nhất quán của dữ liệu, nâng cao hiệu quả vận hành và giảm thiểu chi phí cũng như khí thải nhà kính.
 
-Bài đăng trên blog này là một phần của loạt bài lớn hơn về việc bắt đầu cài đặt data lake dành cho lĩnh vực y tế. Trong bài đăng blog cuối cùng của tôi trong loạt bài, *“Bắt đầu với data lake dành cho lĩnh vực y tế: Đào sâu vào Amazon Cognito”*, tôi tập trung vào các chi tiết cụ thể của việc sử dụng Amazon Cognito và Attribute Based Access Control (ABAC) để xác thực và ủy quyền người dùng trong giải pháp data lake y tế. Trong blog này, tôi trình bày chi tiết cách giải pháp đã phát triển ở cấp độ cơ bản, bao gồm các quyết định thiết kế mà tôi đã đưa ra và các tính năng bổ sung được sử dụng. Bạn có thể truy cập các code samples cho giải pháp tại Git repo này để tham khảo.
+### Những thách thức trong phương pháp truyền thống
+Việc xây dựng mô hình tài nguyên 3D cho một mỏ mới đòi hỏi phải khoan hàng nghìn lỗ để kiểm tra cấu trúc và thành phần mẫu vật. Quy trình này đối mặt với nhiều rào cản như:
+* Tiếp cận hiện trường khó khăn: Các nhà địa chất phải di chuyển quãng đường dài để kiểm tra các hộp mẫu vật lý.
+* Đánh giá mang tính chủ quan: Các chuyên gia khác nhau thường đưa ra những ghi chép địa chất không đồng nhất.
+* Dữ liệu lịch sử bị lãng quên: Hình ảnh từ các chiến dịch trước đó thường thiếu công cụ chuẩn hóa để phân tích có ý nghĩa.
+* Mẫu vật bị xuống cấp: Các mẫu vật lý có thể bị mất hoặc hỏng theo thời gian, gây khó khăn cho việc xác thực dữ liệu cũ.
 
----
+### Machine Learning trên quy mô địa chất
+LITHOLENS™ sử dụng một bộ mô hình ML và Deep Learning (DL) toàn diện để biến hình ảnh thô thành thông tin chi tiết có thể thực thi:
+* Trích xuất và Phân cụm màu sắc: Sử dụng các thuật toán như K-Means hoặc GMM để nhận diện các biến thể khoáng vật học thông qua pixel màu sắc.
+* Báo cáo tỷ lệ phần trăm: Phân đoạn hình ảnh thành các phần (ví dụ: khoảng cách 20cm) để phân tích sự phân bố không gian của các mẫu thạch học.
+* Mô hình Deep Learning chuyên sâu:
+  * RoQE Net: Một mạng thần kinh tiên tiến giúp trích xuất các thông số kỹ thuật địa chất như Chỉ số chất lượng đá (RQD).
+  * VeinNet và CobbleNet: Được thiết kế để xác định các đặc điểm địa chất phức tạp như mạch khoáng và cấu trúc thạch học với độ chính xác cao.
 
-## Hướng dẫn kiến trúc
+### Kiến trúc giải pháp trên AWS
+ALS GeoAnalytics đã xây dựng một kiến trúc lai (hybrid) kết hợp giữa các khối công việc được container hóa và các thành phần không máy chủ (serverless):
 
-Thay đổi chính kể từ lần trình bày cuối cùng của kiến trúc tổng thể là việc tách dịch vụ đơn lẻ thành một tập hợp các dịch vụ nhỏ để cải thiện khả năng bảo trì và tính linh hoạt. Việc tích hợp một lượng lớn dữ liệu y tế khác nhau thường yêu cầu các trình kết nối chuyên biệt cho từng định dạng; bằng cách giữ chúng được đóng gói riêng biệt với microservices, chúng ta có thể thêm, xóa và sửa đổi từng trình kết nối mà không ảnh hưởng đến những kết nối khác. Các microservices được kết nối rời thông qua tin nhắn publish/subscribe tập trung trong cái mà tôi gọi là “pub/sub hub”.
+![Architecture Diagram](/images/3-BlogsTranslated/3.3-Blog3/architecture_blog3.png)
 
-Giải pháp này đại diện cho những gì tôi sẽ coi là một lần lặp nước rút hợp lý khác từ last post của tôi. Phạm vi vẫn được giới hạn trong việc nhập và phân tích cú pháp đơn giản của các **HL7v2 messages** được định dạng theo **Quy tắc mã hóa 7 (ER7)** thông qua giao diện REST.
+* Amazon EKS (Elastic Kubernetes Service): Đảm nhiệm các tác vụ ML/DL nặng, yêu cầu sức mạnh tính toán từ GPU (instance loại G6).
+* AWS Lambda: Xử lý các hoạt động API và điều phối công việc (orchestration), giúp giảm chi phí vận hành so với việc duy trì máy chủ API luôn bật.
+* Amazon S3 và Amazon RDS: Dùng để lưu trữ dữ liệu đầu vào, kết quả trung gian và quản lý dữ liệu có cấu trúc.
 
-**Kiến trúc giải pháp bây giờ như sau:**
+Điểm nổi bật về hiệu suất: Nhờ sử dụng các hình ảnh máy ảo (AMI) được cấu hình sẵn, thời gian khởi động container đã giảm từ vài phút xuống dưới 30 giây. Ngoài ra, các cụm EKS có thể tự động giảm quy mô về mức 0 khi không có công việc nào trong hàng đợi, giúp tối ưu hóa chi phí tối đa.
 
-> *Hình 1. Kiến trúc tổng thể; những ô màu thể hiện những dịch vụ riêng biệt.*
+### Tác động kinh doanh và Tầm nhìn tương lai
+Đến nay, LITHOLENS™ đã triển khai thành công tại 10 công ty khai thác với hơn 40 dự án đang hoạt động. Hệ thống không chỉ giúp chuẩn hóa quy trình phân tích mà còn cho phép giám sát và báo cáo theo thời gian thực, giúp các nhà quản lý đưa ra quyết định nhanh chóng và chính xác hơn.
+Sự thành công của LITHOLENS™ trên Amazon EKS không chỉ dừng lại ở ngành khai khoáng. ALS GeoAnalytics đang hướng tới việc mở rộng nền tảng này sang các lĩnh vực như dầu khí, kỹ thuật dân dụng và thậm chí là thám hiểm không gian.
 
----
-
-Mặc dù thuật ngữ *microservices* có một số sự mơ hồ cố hữu, một số đặc điểm là chung:  
-- Chúng nhỏ, tự chủ, kết hợp rời rạc  
-- Có thể tái sử dụng, giao tiếp thông qua giao diện được xác định rõ  
-- Chuyên biệt để giải quyết một việc  
-- Thường được triển khai trong **event-driven architecture**
-
-Khi xác định vị trí tạo ranh giới giữa các microservices, cần cân nhắc:  
-- **Nội tại**: công nghệ được sử dụng, hiệu suất, độ tin cậy, khả năng mở rộng  
-- **Bên ngoài**: chức năng phụ thuộc, tần suất thay đổi, khả năng tái sử dụng  
-- **Con người**: quyền sở hữu nhóm, quản lý *cognitive load*
-
----
-
-## Lựa chọn công nghệ và phạm vi giao tiếp
-
-| Phạm vi giao tiếp                        | Các công nghệ / mô hình cần xem xét                                                        |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Trong một microservice                   | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Giữa các microservices trong một dịch vụ | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Giữa các dịch vụ                         | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
-
----
-
-## The pub/sub hub
-
-Việc sử dụng kiến trúc **hub-and-spoke** (hay message broker) hoạt động tốt với một số lượng nhỏ các microservices liên quan chặt chẽ.  
-- Mỗi microservice chỉ phụ thuộc vào *hub*  
-- Kết nối giữa các microservice chỉ giới hạn ở nội dung của message được xuất  
-- Giảm số lượng synchronous calls vì pub/sub là *push* không đồng bộ một chiều
-
-Nhược điểm: cần **phối hợp và giám sát** để tránh microservice xử lý nhầm message.
-
----
-
-## Core microservice
-
-Cung cấp dữ liệu nền tảng và lớp truyền thông, gồm:  
-- **Amazon S3** bucket cho dữ liệu  
-- **Amazon DynamoDB** cho danh mục dữ liệu  
-- **AWS Lambda** để ghi message vào data lake và danh mục  
-- **Amazon SNS** topic làm *hub*  
-- **Amazon S3** bucket cho artifacts như mã Lambda
-
-> Chỉ cho phép truy cập ghi gián tiếp vào data lake qua hàm Lambda → đảm bảo nhất quán.
-
----
-
-## Front door microservice
-
-- Cung cấp API Gateway để tương tác REST bên ngoài  
-- Xác thực & ủy quyền dựa trên **OIDC** thông qua **Amazon Cognito**  
-- Cơ chế *deduplication* tự quản lý bằng DynamoDB thay vì SNS FIFO vì:
-  1. SNS deduplication TTL chỉ 5 phút
-  2. SNS FIFO yêu cầu SQS FIFO
-  3. Chủ động báo cho sender biết message là bản sao
-
----
-
-## Staging ER7 microservice
-
-- Lambda “trigger” đăng ký với pub/sub hub, lọc message theo attribute  
-- Step Functions Express Workflow để chuyển ER7 → JSON  
-- Hai Lambda:
-  1. Sửa format ER7 (newline, carriage return)
-  2. Parsing logic  
-- Kết quả hoặc lỗi được đẩy lại vào pub/sub hub
-
----
-
-## Tính năng mới trong giải pháp
-
-### 1. AWS CloudFormation cross-stack references
-Ví dụ *outputs* trong core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+Link bài viết gốc: [https://aws.amazon.com/vi/blogs/architecture/how-als-geoanalytics-litholens-revolutionizes-core-logging-through-machine-learning-with-amazon-eks/](https://aws.amazon.com/vi/blogs/architecture/how-als-geoanalytics-litholens-revolutionizes-core-logging-through-machine-learning-with-amazon-eks/)

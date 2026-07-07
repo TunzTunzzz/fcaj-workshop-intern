@@ -6,42 +6,46 @@ chapter: false
 pre: " <b> 7. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
-
-> Here, you can freely share your personal opinions about your experience participating in the First Cloud Journey program. This will help the FCJ team improve any shortcomings based on the following aspects:
-
 ### Overall Evaluation
 
 **1. Working Environment**  
-The working environment is very friendly and open. FCJ members are always willing to help whenever I encounter difficulties, even outside working hours. The workspace is tidy and comfortable, helping me focus better. However, I think it would be nice to have more social gatherings or team bonding activities to strengthen relationships.
+An open, friendly environment and a comfortable workspace that helps with concentration. Members are always ready to support when facing difficulties. More team bonding activities should be added to increase connections.
 
 **2. Support from Mentor / Team Admin**  
-The mentor provides very detailed guidance, explains clearly when I don’t understand, and always encourages me to ask questions. The admin team supports administrative tasks, provides necessary documents, and creates favorable conditions for me to work effectively. I especially appreciate that the mentor allows me to try and solve problems myself instead of just giving the answer.
+Mentors provide dedicated guidance, clear explanations, and create space for interns to solve problems themselves. The admin team supports procedures thoughtfully and quickly.
 
 **3. Relevance of Work to Academic Major**  
-The tasks I was assigned align well with the knowledge I learned at university, while also introducing me to new areas I had never encountered before. This allowed me to both strengthen my foundational knowledge and gain practical skills.
+Although the work does not completely overlap with the knowledge taught at school, it brings a fresh practical perspective, helping to reinforce foundational theory and acquire many new technologies.
 
 **4. Learning & Skill Development Opportunities**  
-During the internship, I learned many new skills such as using project management tools, teamwork skills, and professional communication in a corporate environment. The mentor also shared valuable real-world experiences that helped me better plan my career path.
+Learned many practical skills: project management, teamwork, professional communication. Mentors shared a lot of valuable career orientation experience.
 
 **5. Company Culture & Team Spirit**  
-The company culture is very positive: everyone respects each other, works seriously but still keeps things enjoyable. When there are urgent projects, everyone works together and supports one another regardless of their position. This made me feel like a real part of the team, even as an intern.
+A culture of respect, serious but fun. High team spirit, with no discrimination in positions when running urgent projects, creating a cohesive feeling like a family.
 
 **6. Internship Policies / Benefits**  
-The company provides an internship allowance and offers flexible working hours when needed. In addition, having the opportunity to join internal training sessions is a big plus.
+Flexible working hours, creating favorable conditions for students. Participating in internal events helps to significantly expand knowledge.
 
----
 
 ### Additional Questions
-- What did you find **most satisfying** during your internship?  
-- What do you think the company **should improve** for future interns?  
-- If recommending to a friend, would you **suggest they intern here**? Why or why not?  
 
----
+**1. What did you find most satisfying during your internship?**  
+The friendly environment and the dedicated support from mentors, admins, and colleagues when encountering difficulties. Opportunities to participate in events to expand networks and knowledge.
+
+**2. What do you think the company should improve for future interns?**  
+Need to provide a clearer internship roadmap from the beginning. Should organize more technical workshops sharing experiences so that interns can confidently approach the work.
+
+**3. If recommending to a friend, would you suggest they intern here? Why or why not?**  
+Yes, I would. Because this is a professional environment, being closely mentored and having many opportunities to practice both professional and soft skills before graduation.
+
 
 ### Suggestions & Expectations
-- Do you have any suggestions to improve the internship experience?  
-- Would you like to continue this program in the future?  
-- Any other comments (free sharing):
+
+**1. Do you have any suggestions to improve the internship experience?**  
+There should be cross-exchanges between project groups and periodic review sessions (1-on-1) for interns to receive feedback to improve.
+
+**2. Would you like to continue this program in the future?**  
+Yes, I wish to continue accompanying to participate in many practical projects and learn more deeply in a corporate environment.
+
+**3. Any other comments (free sharing):**  
+Sincerely thank the organizers and mentors for their companionship and enthusiastic support. Wishing the program to grow stronger and bring value to many students.

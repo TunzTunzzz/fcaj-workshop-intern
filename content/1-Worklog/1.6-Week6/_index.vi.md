@@ -1,58 +1,12 @@
----
-title: "Worklog Tuần 6"
-date: 2024-01-01
-weight: 1
-chapter: false
-pre: " <b> 1.6. </b> "
----
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
-
-
-### Mục tiêu tuần 6:
-
-* Kết nối, làm quen với các thành viên trong First Cloud Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
-
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 3 | Thực hành tự động start/stop EC2 bằng Lambda, IAM Role, Tag và Slack Webhook. | 26/05/2026 | 26/05/2026 | [Xem&nbsp;Youtube](https://www.youtube.com/watch?v=esPRIj_zZSQ&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=161) |
+| 4 | Thực hành quản lý Tags, lọc tài nguyên theo tag, dùng CLI với tag và tạo Resource Group. | 27/05/2026 | 27/05/2026 | [Xem&nbsp;Youtube](https://www.youtube.com/watch?v=ZQsPVBH8m78&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=171) |
+| 5 | Thực hành tạo IAM User, Policy, Role, Switch Role và kiểm tra quyền truy cập EC2 theo Region/Tag. | 28/05/2026 | 28/05/2026 | [Xem&nbsp;Youtube](https://www.youtube.com/watch?v=vkBJ0Cxc6Nw&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=177) |
+| 6 | Thực hành tạo chính sách giới hạn IAM, user giới hạn quyền và kiểm thử giới hạn truy cập. | 29/05/2026 | 29/05/2026 | [Xem&nbsp;Youtube](https://www.youtube.com/watch?v=MDDYZKU4i6Y&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=187) |
 
 
 ### Kết quả đạt được tuần 6:
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
 
-* Đã tạo và cấu hình AWS Free Tier account thành công.
-
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+* Bật và cấu hình thành công AWS Security Hub để theo dõi tình trạng bảo mật toàn cục.
+* Xây dựng thành công cơ chế tự động start/stop EC2 bằng Lambda, tích hợp thông báo qua Slack Webhook.
+* Quản lý tài nguyên chuyên nghiệp hơn bằng cách tạo Resource Group và sử dụng AWS CLI kết hợp bộ lọc Tags.
+* Triển khai thành công các chính sách IAM, IAM Role nâng cao, Switch Role và kiểm thử các giới hạn truy cập theo khu vực (Region) và Tag.
