@@ -1,13 +1,10 @@
 ---
-title: "5.7.1 Persistence & Offloading Design"
+title: "Persistence & Offloading Design"
 date: 2024-01-01
 weight: 1
 chapter: false
 pre: " <b> 5.7.1. </b> "
 ---
-
-# Data Model and Hybrid Offloading Architecture
-
 The DocuFlow AI persistence layout combines a **Single-Table Design** pattern on Amazon DynamoDB with S3 **Offloading** (separating large attributes) to optimize retrieval performance, control database costs, and bypass physical NoSQL record size boundaries.
 
 ---
@@ -60,10 +57,6 @@ We enforce a single table named `docuflow-dev-documents-table` partitioned using
 ---
 
 ### Evidence
-* **DynamoDB metadata item storage verification on the AWS Console:**
-  *(Save the screenshot to `static/images/5-Workshop/5.7-store-result-review-flow/5.7.1-persistence/dynamodb-item.png`)*
-  ![DynamoDB Item](/images/5-Workshop/5.7-store-result-review-flow/5.7.1-persistence/dynamodb-item.png)
 
-* **S3 processed result.json output validation:**
-  *(Save the screenshot to `static/images/5-Workshop/5.7-store-result-review-flow/5.7.1-persistence/s3-processed-result.png`)*
-  ![S3 Processed JSON](/images/5-Workshop/5.7-store-result-review-flow/5.7.1-persistence/s3-processed-result.png)
+- Verify that the DynamoDB item contains the expected metadata keys and status.
+- Verify that `result.json` exists under the expected S3 Processed prefix.

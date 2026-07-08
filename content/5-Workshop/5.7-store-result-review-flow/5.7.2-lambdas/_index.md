@@ -1,13 +1,10 @@
 ---
-title: "5.7.2 Data Management Lambdas"
+title: "Data Management Lambdas"
 date: 2024-01-01
 weight: 2
 chapter: false
 pre: " <b> 5.7.2. </b> "
 ---
-
-# CREATING PROCESSING FUNCTIONS (AWS LAMBDA)
-
 What is AWS Lambda? Lambda is a service that lets you run code without provisioning or managing a traditional server. Our data module system requires four small Lambda functions to receive commands from users and read/write data to S3 and DynamoDB.
 
 ---
@@ -50,80 +47,7 @@ Once the function is created, you will see the management interface. In the **Co
 ![image33.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.2-lambdas/image33.png)
 
 **Source Code (`index.mjs`)**:
-```javascript
-import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
-
-const ddbClient = new DynamoDBClient({ region: "ap-southeast-1" });
-const s3Client = new S3Client({ region: "ap-southeast-1" });
-
-export const handler = async (event) => {
-  console.log("Event:", JSON.stringify(event));
-  try {
-    const userId = event.requestContext?.authorizer?.claims?.sub || "user-001";
-    const documentId = event.pathParameters?.documentId;
-    const tableName = process.env.DOCUFLOW_DEV_TABLE_NAME;
-    const processedBucket = process.env.DOCUFLOW_DEV_PROCESSED_BUCKET;
-    
-    // 1. Fetch summary metadata from DynamoDB
-    const ddbResult = await ddbClient.send(new GetItemCommand({
-      TableName: tableName,
-      Key: {
-        PK: { S: `USER#${userId}` },
-        SK: { S: `DOC#${documentId}` }
-      }
-    }));
-    
-    if (!ddbResult.Item) {
-      return {
-        statusCode: 404,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ error: "Document not found" })
-      };
-    }
-    
-    // 2. Download the detailed result file from the S3 Processed Bucket
-    const s3Key = `processed/${userId}/${documentId}/result.json`;
-    let s3Data = {};
-    try {
-      const s3Response = await s3Client.send(new GetObjectCommand({
-        Bucket: processedBucket,
-        Key: s3Key
-      }));
-      const bodyString = await s3Response.Body.transformToString();
-      s3Data = JSON.parse(bodyString);
-    } catch (s3Err) {
-      console.warn("S3 result.json not found, falling back to DynamoDB:", s3Err);
-    }
-    
-    // Reformat DynamoDB item
-    const metadata = {};
-    for (const [key, value] of Object.entries(ddbResult.Item)) {
-      if (["PK", "SK", "GSI1PK", "GSI1SK"].includes(key)) continue;
-      metadata[key] = Object.values(value)[0];
-    }
-    
-    return {
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ ...metadata, ...s3Data })
-    };
-  } catch (err) {
-    console.error(err);
-    return {
-      statusCode: 500,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({ error: err.message })
-    };
-  }
-};
-```
+{{< source-code file="services/functions/get-document/index.mjs" language="javascript" >}}
 
 ---
 
@@ -158,67 +82,7 @@ Once the function is created, in the Code source section, paste the programming 
    ![image41.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.2-lambdas/image41.png)
 
 **Source Code (`index.mjs`)**:
-```javascript
-import { DynamoDBClient, QueryCommand } from "@aws-sdk/client-dynamodb";
-
-const ddbClient = new DynamoDBClient({ region: "ap-southeast-1" });
-
-export const handler = async (event) => {
-  console.log("Event:", JSON.stringify(event));
-  try {
-    const userId = event.requestContext?.authorizer?.claims?.sub || "user-001";
-    const status = event.queryStringParameters?.status;
-    const tableName = process.env.DOCUFLOW_DEV_TABLE_NAME;
-    
-    let result;
-    if (status) {
-      // Query on Global Secondary Index (GSI) filtering by status
-      result = await ddbClient.send(new QueryCommand({
-        TableName: tableName,
-        IndexName: "docuflow-dev-documents-status-createdAt-index",
-        KeyConditionExpression: "GSI1PK = :gsi1pk",
-        ExpressionAttributeValues: {
-          ":gsi1pk": { S: `STATUS#${status}` }
-        }
-      }));
-    } else {
-      // Query on main table by user ID (PK)
-      result = await ddbClient.send(new QueryCommand({
-        TableName: tableName,
-        KeyConditionExpression: "PK = :pk",
-        ExpressionAttributeValues: {
-          ":pk": { S: `USER#${userId}` }
-        }
-      }));
-    }
-    
-    const items = result.Items.map(item => {
-      const clean = {};
-      for (const [key, val] of Object.entries(item)) {
-        if (["PK", "SK", "GSI1PK", "GSI1SK"].includes(key)) continue;
-        clean[key] = Object.values(val)[0];
-      }
-      return clean;
-    });
-    
-    return {
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ items })
-    };
-  } catch (err) {
-    console.error(err);
-    return {
-      statusCode: 500,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({ error: err.message })
-    };
-  }
-};
-```
+{{< source-code file="services/functions/list-documents/index.mjs" language="javascript" >}}
 
 ---
 
@@ -250,97 +114,15 @@ This function is used to save the information that the user manually edited on t
 ![image48.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.2-lambdas/image48.png)
 
 **Source Code (`index.mjs`)**:
-```javascript
-import { DynamoDBClient, UpdateItemCommand, GetItemCommand } from "@aws-sdk/client-dynamodb";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-
-const ddbClient = new DynamoDBClient({ region: "ap-southeast-1" });
-const s3Client = new S3Client({ region: "ap-southeast-1" });
-
-export const handler = async (event) => {
-  console.log("Event:", JSON.stringify(event));
-  try {
-    const userId = event.requestContext?.authorizer?.claims?.sub || "user-001";
-    const documentId = event.pathParameters?.documentId;
-    const body = JSON.parse(event.body);
-    const { corrections } = body; 
-    
-    const tableName = process.env.DOCUFLOW_DEV_TABLE_NAME;
-    const processedBucket = process.env.DOCUFLOW_DEV_PROCESSED_BUCKET;
-    
-    // 1. Check if document exists
-    const ddbItem = await ddbClient.send(new GetItemCommand({
-      TableName: tableName,
-      Key: {
-        PK: { S: `USER#${userId}` },
-        SK: { S: `DOC#${documentId}` }
-      }
-    }));
-    
-    if (!ddbItem.Item) {
-      return {
-        statusCode: 404,
-        headers: { "Access-Control-Allow-Origin": "*" },
-        body: JSON.stringify({ error: "Document not found" })
-      };
-    }
-    
-    // 2. Update status to APPROVED on DynamoDB
-    await ddbClient.send(new UpdateItemCommand({
-      TableName: tableName,
-      Key: {
-        PK: { S: `USER#${userId}` },
-        SK: { S: `DOC#${documentId}` }
-      },
-      UpdateExpression: "SET #status = :status, GSI1PK = :gsi1pk, reviewedAt = :time, reviewedBy = :user",
-      ExpressionAttributeNames: { "#status": "status" },
-      ExpressionAttributeValues: {
-        ":status": { S: "APPROVED" },
-        ":gsi1pk": { S: "STATUS#APPROVED" },
-        ":time": { S: new Date().toISOString() },
-        ":user": { S: userId }
-      }
-    }));
-    
-    // 3. Overwrite the new modified result.json file on S3
-    const s3Key = `processed/${userId}/${documentId}/result.json`;
-    const finalizedResult = {
-      documentId,
-      userId,
-      status: "APPROVED",
-      corrections,
-      updatedAt: new Date().toISOString()
-    };
-    
-    await s3Client.send(new PutObjectCommand({
-      Bucket: processedBucket,
-      Key: s3Key,
-      Body: JSON.stringify(finalizedResult),
-      ContentType: "application/json"
-    }));
-    
-    return {
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message: "Review submitted successfully" })
-    };
-  } catch (err) {
-    console.error(err);
-    return {
-      statusCode: 500,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({ error: err.message })
-    };
-  }
-};
-```
+{{< source-code file="services/functions/review-update/index.mjs" language="javascript" >}}
 
 ---
 
-### STEP 3.4: Create Delete Document Lambda
+## Extended Lambdas (Optional project additions)
+
+The following three functions are **not part of the approved MVP Lambda inventory**. They are additional project features for document deletion, Dashboard data, and explicit process/retry controls. Deploy them only when the corresponding extended frontend and API routes are used.
+
+### EXTENDED LAMBDA E1: Create Delete Document Lambda
 
 This function is used to delete the metadata of one or more user documents in DynamoDB and their associated files on S3 Raw & Processed.
 
@@ -369,74 +151,35 @@ This function is used to delete the metadata of one or more user documents in Dy
    ![image55.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.2-lambdas/image55.png)
 
 **Source Code (`index.mjs`)**:
-```javascript
-import { DynamoDBClient, DeleteItemCommand } from "@aws-sdk/client-dynamodb";
-import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
-
-const ddbClient = new DynamoDBClient({ region: "ap-southeast-1" });
-const s3Client = new S3Client({ region: "ap-southeast-1" });
-
-export const handler = async (event) => {
-  console.log("Event:", JSON.stringify(event));
-  try {
-    const userId = event.requestContext?.authorizer?.claims?.sub || "user-001";
-    const documentId = event.pathParameters?.documentId;
-    
-    const tableName = process.env.DOCUFLOW_DEV_TABLE_NAME;
-    const rawBucket = process.env.DOCUFLOW_DEV_RAW_BUCKET;
-    const processedBucket = process.env.DOCUFLOW_DEV_PROCESSED_BUCKET;
-    
-    // 1. Delete record in DynamoDB
-    await ddbClient.send(new DeleteItemCommand({
-      TableName: tableName,
-      Key: {
-        PK: { S: `USER#${userId}` },
-        SK: { S: `DOC#${documentId}` }
-      }
-    }));
-    
-    // 2. Delete original file in S3 Raw
-    try {
-      await s3Client.send(new DeleteObjectCommand({
-        Bucket: rawBucket,
-        Key: `raw/${userId}/${documentId}/original.pdf`
-      }));
-    } catch (e) { console.warn("Raw file not found in S3"); }
-    
-    // 3. Delete result file in S3 Processed
-    try {
-      await s3Client.send(new DeleteObjectCommand({
-        Bucket: processedBucket,
-        Key: `processed/${userId}/${documentId}/result.json`
-      }));
-    } catch (e) { console.warn("Processed file not found in S3"); }
-    
-    return {
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message: "Document deleted successfully" })
-    };
-  } catch (err) {
-    console.error(err);
-    return {
-      statusCode: 500,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({ error: err.message })
-    };
-  }
-};
-```
+{{< source-code file="services/functions/delete-document/index.mjs" language="javascript" >}}
 
 ---
 
-### STEP 3.5: CONFIGURE ENVIRONMENT VARIABLES & TIMEOUT
+### EXTENDED LAMBDA E2: CREATE DASHBOARD LAMBDA
+
+The `dashboard` handler aggregates KPIs, recent activity, notifications, and status distribution for the frontend Dashboard. Create `docuflow-dev-data-dashboard-lambda` using the same runtime, architecture, and execution role pattern as the other Data Lambdas.
+
+**Source Code (`index.mjs`)**:
+
+{{< source-code file="services/functions/dashboard/index.mjs" language="javascript" >}}
+
+---
+
+### EXTENDED LAMBDA E3: CREATE PROCESS CONTROL LAMBDA
+
+The `process-control` handler verifies document ownership, checks the raw S3 object, and starts Step Functions for process or retry requests. Create `docuflow-dev-data-process-control-lambda` with the same runtime and architecture; its execution role requires Raw S3 read access, DynamoDB read/write access, and `states:StartExecution`.
+
+**Source Code (`index.mjs`)**:
+
+{{< source-code file="services/functions/process-control/index.mjs" language="javascript" >}}
+
+---
+
+### COMMON CONFIGURATION: ENVIRONMENT VARIABLES & TIMEOUT
 
 Our code needs to know what the Table name and Bucket name are to connect. In addition, reading files sometimes takes time, so we need to increase the default wait time so the function doesn't get interrupted.
 
-Perform the following steps consecutively for **all 4 Lambda functions** you just created:
+Perform the following steps for the **three core Data Lambdas and any extended Lambdas that you choose to deploy**:
 
 1. At the details interface of each created Lambda function, switch to the **Configuration** tab.
  ![image56.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.2-lambdas/image56.png)
@@ -458,14 +201,14 @@ Click **Save**.
    * **Third variable pair**:
      * **Key**: `DOCUFLOW_DEV_RAW_BUCKET`
      * **Value**: Enter exactly the Raw S3 bucket name (e.g., `docuflow-dev-raw-<AWS_ACCOUNT_ID>-ap-southeast-1`)
+   * For **Process Control**, also add `DOCUFLOW_DEV_STATE_MACHINE_ARN` with the deployed processing State Machine ARN.
+   * For **Dashboard**, optionally add `DOCUFLOW_DEV_VND_EXCHANGE_RATES` as a JSON object when report totals must be normalized to VND.
 
 ![image61.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.2-lambdas/image61.png)
 
 5. Click **Save** to apply.
 ![image62.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.2-lambdas/image62.png)
 
-After completing this step for all 4 functions, your framework is ready to receive the logic processing source code and can be configured to integrate straight into the system's API Gateway.
+After completing this configuration for the selected functions, the Lambdas are ready to integrate with API Gateway and Step Functions.
 
 ---
-
-

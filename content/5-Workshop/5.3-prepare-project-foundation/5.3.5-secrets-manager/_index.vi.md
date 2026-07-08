@@ -1,21 +1,25 @@
 ---
-title: "5.3.5 Cấu hình Secrets Manager"
+title: "Cấu hình Secrets Manager"
 date: 2024-01-01
 weight: 5
 chapter: false
 pre: " <b> 5.3.5. </b> "
 ---
-
-# Lưu trữ API Key Bảo mật với Secrets Manager
-
 Chúng ta sẽ lưu trữ và mã hóa an toàn khóa truy cập (API Key) của External AI sử dụng dịch vụ AWS Secrets Manager. Khóa bí mật này sẽ được mã hóa bằng KMS Key của dự án, và chỉ duy nhất hàm AI Proxy Lambda mới có quyền lấy giá trị của nó.
-   
-   
 
-   
+### Chuẩn bị External AI API Key
 
-   
+Trước khi tạo secret trong AWS, bạn cần có API key của nhà cung cấp LLM. Trong workshop này, code của AI Proxy Lambda đang gọi OpenAI API tại `/v1/chat/completions` và mặc định sử dụng model `gpt-4o`.
 
+1. Truy cập [OpenAI API keys](https://platform.openai.com/api-keys), đăng nhập hoặc tạo tài khoản OpenAI Platform nếu chưa có.
+2. Chọn đúng Project dùng cho workshop, hoặc tạo một Project riêng, ví dụ `docuflow-ai-workshop`.
+3. Tạo secret key mới, đặt tên dễ nhận diện, ví dụ `docuflow-dev-ai-proxy`.
+4. Sao chép API key ngay khi nó được tạo. OpenAI chỉ hiển thị đầy đủ secret key tại thời điểm tạo; nếu mất key, bạn cần tạo key mới và cập nhật lại secret trong AWS.
+5. Kiểm tra tài khoản OpenAI Platform đã có billing/quota phù hợp và model bạn định dùng đã được cấp quyền. Nếu không dùng `gpt-4o`, hãy ghi lại model name để cấu hình biến môi trường `OPENAI_MODEL` ở bước AI Proxy Lambda.
+
+{{% notice warning %}}
+Không đưa API key vào frontend, GitHub, file `.env` public hoặc ảnh chụp màn hình. Trong workshop này, API key chỉ được dán vào AWS Secrets Manager với key name `api_key`.
+{{% /notice %}}
 
 ---
 
@@ -100,7 +104,7 @@ Chúng ta sẽ lưu trữ và mã hóa an toàn khóa truy cập (API Key) của
 
 4. **Ghi lại ARN của Secret**:
    * Sau khi lưu xong, nhấp vào tên Secret vừa tạo.
-   * Sao chép lại chuỗi **Secret ARN** của nó (Ví dụ: `arn:aws:secretsmanager:ap-southeast-1:603199863187:secret:docuflow-dev-external-ai-api-key-XXXXXX`).
+   * Sao chép lại chuỗi **Secret ARN** của nó (Ví dụ: `arn:aws:secretsmanager:ap-southeast-1:<AWS_ACCOUNT_ID>:secret:docuflow-dev-external-ai-api-key-XXXXXX`).
 
 5. **Cấp quyền chuyên biệt cho duy nhất AI Proxy Lambda (Chốt chặn bảo mật)**:
    * Để cấu hình chính xác con Lambda của bạn được đọc bí mật này, bạn thực hiện cấu hình IAM Policy như sau:

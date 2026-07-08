@@ -1,13 +1,10 @@
 ---
-title: "5.8.3 Distributed Tracing"
+title: "Distributed Tracing"
 date: 2024-01-01
 weight: 3
 chapter: false
 pre: " <b> 5.8.3. </b> "
 ---
-
-# Enable Distributed Tracing with AWS X-Ray
-
 To monitor detailed performance and draw the path of requests (Service Map) throughout the system—from the API Gateway, through the Step Functions state machine, down to each executing Lambda function—we need to enable AWS X-Ray.
 
 ---
@@ -32,7 +29,7 @@ To monitor detailed performance and draw the path of requests (Service Map) thro
 ### Step 2: Enable X-Ray on Step Functions (Workflow)
 *Helps the state machine inherit the Trace ID from API Gateway and forward it to Lambda tasks.*
 1. Go to the **Step Functions** service on the AWS Console.
-2. Select the project's State Machine: `docuflow-dev-invoice-processing-workflow`.
+2. Select the project's State Machine: `docuflow-dev-workflow-processing-state-machine`.
    
    ![image154.png](/images/5-Workshop/5.8-observability-alerting-governance/5.8.3-tracing/image154.png)
 
@@ -48,9 +45,9 @@ To monitor detailed performance and draw the path of requests (Service Map) thro
 *You need to manually enable Active Tracing for each Lambda function so X-Ray can record detailed code execution logs:*
 
 #### List of 8 Lambda functions to go through:
-* `docuflow-dev-api-upload-url-lambda`
+* `docuflow-dev-api-generate-upload-url-lambda`
 * `docuflow-dev-ingestion-job-starter-lambda`
-* `docuflow-dev-ingestion-validate-lambda`
+* `docuflow-dev-workflow-validate-lambda`
 * `docuflow-dev-ai-textract-lambda`
 * `docuflow-dev-ai-proxy-lambda`
 * `docuflow-dev-ai-confidence-status-lambda`

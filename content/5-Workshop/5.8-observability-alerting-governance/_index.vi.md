@@ -5,9 +5,6 @@ weight: 8
 chapter: false
 pre: " <b> 5.8. </b> "
 ---
-
-# Giám sát, Cảnh báo & Quản trị hệ thống
-
 ### 1. Mục tiêu (Goal)
 Thiết lập khả năng quan sát hệ thống (Observability), cấu hình log và cảnh báo tự động khi có sự cố, kích hoạt tracing xuyên suốt dịch vụ, lưu vết hoạt động (Auditing) và quản lý chặt chẽ ngân sách AWS để tối ưu hóa credits của dự án.
 

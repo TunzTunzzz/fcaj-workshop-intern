@@ -1,13 +1,10 @@
 ---
-title: "5.6.2 Create SQS Queues"
+title: "Create SQS Queues"
 date: 2024-01-01
 weight: 2
 chapter: false
 pre: " <b> 5.6.2. </b> "
 ---
-
-# Create SQS DLQ and Main Queue
-
 #### Create SQS DLQ and Main Queue
 ![image15.png](/images/5-Workshop/5.6-document-ingestion-pipeline/image15.png)
 In the AWS search bar, type: **SQS** → Select **Simple Queue Service** → **Queues** → **Create queue**.

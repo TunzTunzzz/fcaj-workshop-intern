@@ -1,13 +1,10 @@
 ---
-title: "5.3.3 Cấu hình S3 Buckets"
+title: "Cấu hình S3 Buckets"
 date: 2024-01-01
 weight: 3
 chapter: false
 pre: " <b> 5.3.3. </b> "
 ---
-
-# Cấu hình các Amazon S3 Buckets
-
 ## PHẦN 1: TẠO AMAZON S3 RAW BUCKET
 
 1. Vào dịch vụ **S3** → **Buckets** → **Create bucket**.
@@ -44,33 +41,28 @@ Amazon S3 là gì? Bạn hãy tưởng tượng S3 giống như một ổ cứng
 ### 1. Truy cập dịch vụ S3:
 Trên thanh tìm kiếm ở trên cùng, nhập S3 và chọn dịch vụ S3.
 
-*[Hình ảnh]*
-
 ### 2. Bắt đầu tạo Bucket:
 Tại giao diện S3, nhấn nút **Create bucket**.
 
-*[Hình ảnh]*
-
 ### 3. Cấu hình thông tin cơ bản (General configuration):
-* **Bucket name**: Nhập tên chuẩn xác theo công thức: `docuflow-dev-processed-<MÃ_ACCOUNT_AWS_CỦA_BẠN>-ap-southeast-1`. (Ví dụ: `docuflow-dev-processed-603199863187-ap-southeast-1` )
+* **Bucket name**: Nhập tên chuẩn xác theo công thức: `docuflow-dev-processed-<MÃ_ACCOUNT_AWS_CỦA_BẠN>-ap-southeast-1`.
 * **AWS Region**: Chọn khu vực Singapore (ap-southeast-1) để tốc độ kết nối về Việt Nam nhanh nhất.
+![Cấu hình bucket processed](/images/5-Workshop/5.3-prepare-project-foundation/5.3.3-s3/image7.png)
 
 ### 4. Cấu hình bảo mật (Block Public Access):
 Kéo xuống mục **Block Public Access settings for this bucket**. Để dữ liệu của chúng ta được an toàn và không bị người lạ trên mạng đọc được, hãy đảm bảo rằng ô vuông **Block all public access** (Chặn mọi quyền truy cập công khai) đã được tích chọn.
 
 ### 5. Mã hóa dữ liệu (Default encryption):
 Cuộn xuống mục **Encryption type** (Loại mã hóa), hãy chọn dòng **Server-side encryption with Amazon S3 managed keys (SSE-S3)** để AWS tự động mã hóa bảo vệ các file của bạn.
+![Tags và mã hóa bucket processed](/images/5-Workshop/5.3-prepare-project-foundation/5.3.3-s3/image8.png)
 
 ### 6. Hoàn tất:
 Cuộn xuống cuối trang và nhấn **Create bucket**.
-
-*[Hình ảnh]*
+![Bucket processed đã được tạo](/images/5-Workshop/5.3-prepare-project-foundation/5.3.3-s3/image1.png)
 
 ### 7. Tạo folder chứa dữ liệu theo cấu trúc
 *(Ví dụ: `processed/{userId}/{documentId}/result.json`)*
 Nhấn vào nút **Create folder** để tạo folder Processed:
-
-*[Hình ảnh]*
 
 ---
 
@@ -83,9 +75,11 @@ Nhấn vào nút **Create folder** để tạo folder Processed:
 **Bước 1: Bật S3 Block Public Access (Chặn truy cập công khai)**
 1. Tại ô tìm kiếm của AWS Console, gõ **S3** ➔ Chọn dịch vụ **S3**.
 2. Tìm và bấm vào Tên Bucket bạn muốn cấu hình.
+![Danh sách bucket S3](/images/5-Workshop/5.3-prepare-project-foundation/5.3.3-s3/image1.png)
 3. Chọn tab **Permissions** (Quyền truy cập).
 4. Ngay mục đầu tiên Block public access (bucket settings), bấm nút **Edit** (Chỉnh sửa) ở bên phải.
 5. Tích chọn vào ô **Block all public access** (Hệ thống sẽ tự động tích cả 4 ô nhỏ bên dưới).
+![Bật Block Public Access cho S3 bucket](/images/5-Workshop/5.3-prepare-project-foundation/5.3.3-s3/image3.png)
 6. Bấm **Save changes** (Lưu thay đổi).
 
 ### + Cho Raw Bucket
@@ -93,9 +87,11 @@ Nhấn vào nút **Create folder** để tạo folder Processed:
 **Bước 1: Bật S3 Block Public Access (Chặn truy cập công khai)**
 1. Tại ô tìm kiếm của AWS Console, gõ **S3** ➔ Chọn dịch vụ **S3**.
 2. Tìm và bấm vào Tên Bucket bạn muốn cấu hình.
+![Danh sách bucket S3](/images/5-Workshop/5.3-prepare-project-foundation/5.3.3-s3/image1.png)
 3. Chọn tab **Permissions** (Quyền truy cập).
 4. Ngay mục đầu tiên Block public access (bucket settings), bấm nút **Edit** (Chỉnh sửa) ở bên phải.
 5. Tích chọn vào ô **Block all public access** (Hệ thống sẽ tự động tích cả 4 ô nhỏ bên dưới).
+![Bật Block Public Access cho S3 bucket](/images/5-Workshop/5.3-prepare-project-foundation/5.3.3-s3/image3.png)
 6. Bấm **Save changes** (Lưu thay đổi).
 
 ### + Cho Raw Bucket
@@ -108,6 +104,7 @@ Nhấn vào nút **Create folder** để tạo folder Processed:
    * **AWS KMS key**: Chọn tùy chọn **Choose from your AWS KMS keys** (Chọn từ danh sách khóa KMS của bạn).
    * Tại ô tìm kiếm khóa, bạn bấm vào và chọn đúng tên khóa `alias/docuflow-dev-main-key` mà bạn đã tạo ở các bước trước.
    * **Bucket Key**: Chọn **Enable** (Giúp giảm chi phí gọi sang dịch vụ KMS khi hệ thống xử lý lượng lớn hóa đơn).
+![Chọn khóa KMS cho S3 bucket](/images/5-Workshop/5.3-prepare-project-foundation/5.3.3-s3/image4.png)
 4. Bấm **Save changes** để hoàn tất.
 
 ### + Cho Processed Bucket
@@ -120,4 +117,5 @@ Nhấn vào nút **Create folder** để tạo folder Processed:
    * **AWS KMS key**: Chọn tùy chọn **Choose from your AWS KMS keys** (Chọn từ danh sách khóa KMS của bạn).
    * Tại ô tìm kiếm khóa, bạn bấm vào và chọn đúng tên khóa `alias/docuflow-dev-main-key` mà bạn đã tạo ở các bước trước.
    * **Bucket Key**: Chọn **Enable** (Giúp giảm chi phí gọi sang dịch vụ KMS khi hệ thống xử lý lượng lớn hóa đơn).
+![Chọn khóa KMS cho S3 bucket](/images/5-Workshop/5.3-prepare-project-foundation/5.3.3-s3/image4.png)
 4. Bấm **Save changes** để hoàn tất.

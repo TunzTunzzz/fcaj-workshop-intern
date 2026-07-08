@@ -5,14 +5,6 @@ weight: 5
 chapter: false
 pre: " <b> 5. </b> "
 ---
-
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
-
-
-# Tài liệu thực hành - DocuFlow AI
-
 #### Tổng quan
 
 Trong bài lab này, chúng ta sẽ cùng nhau xây dựng giải pháp **DocuFlow AI** – một hệ thống tự động hóa bóc tách hóa đơn và chứng từ thông minh trên nền tảng AWS. 
@@ -30,4 +22,4 @@ Hệ thống sử dụng các dịch vụ Serverless như **Amazon S3**, **Amazo
 7. [Lưu trữ kết quả & Xây dựng luồng phê duyệt](5.7-store-result-review-flow/)
 8. [Giám sát, Cảnh báo & Quản trị hệ thống](5.8-observability-alerting-governance/)
 9. [Kiểm thử tích hợp End-to-End](5.9-end-to-end-testing/)
-10. [Dọn dẹp tài nguyên](5.10-clean-up/)
+10. [Dọn dẹp tài nguyên](5.10-clean-up/)

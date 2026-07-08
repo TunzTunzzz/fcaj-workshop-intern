@@ -1,13 +1,10 @@
 ---
-title: "5.3.2 Khởi tạo AWS KMS CMK"
+title: "Khởi tạo AWS KMS CMK"
 date: 2024-01-01
 weight: 2
 chapter: false
 pre: " <b> 5.3.2. </b> "
 ---
-
-# Khởi tạo Khóa mã hóa gốc (AWS KMS CMK)
-
 Chúng ta sẽ tạo khóa mã hóa đối xứng do khách hàng quản lý (Customer Managed Key) để mã hóa toàn bộ dữ liệu trong S3, DynamoDB và Secrets Manager.
 
 ---

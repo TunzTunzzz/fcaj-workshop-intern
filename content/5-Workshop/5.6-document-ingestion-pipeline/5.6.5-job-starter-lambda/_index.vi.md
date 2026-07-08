@@ -1,13 +1,10 @@
 ---
-title: "5.6.5 Khởi tạo hàm Job Starter Lambda"
+title: "Khởi tạo hàm Job Starter Lambda"
 date: 2024-01-01
 weight: 5
 chapter: false
 pre: " <b> 5.6.5. </b> "
 ---
-
-# Khởi tạo hàm Job Starter Lambda
-
 #### Lab 8: Khởi tạo hàm Job Starter Lambda (`docuflow-dev-ingestion-job-starter-lambda`)
 1. Truy cập **Lambda** -> nhấn **Create function** -> **Author from scratch**.
 2. **Function name**: `docuflow-dev-ingestion-job-starter-lambda`.
@@ -18,52 +15,7 @@ pre: " <b> 5.6.5. </b> "
 7. Tại tab **Configuration** -> **Environment variables**: Thêm biến:
    * `STATE_MACHINE_ARN` = `<ARN_CỦA_STEP_FUNCTIONS_STATE_MACHINE_ĐÃ_TẠO_Ở_TRÊN>`
 8. Tại tab **Code**, copy đoạn code sau, dán đè vào `index.mjs` và nhấn **Deploy**:
-   ```javascript
-   import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
-
-   const sfnClient = new SFNClient({ region: "ap-southeast-1" });
-
-   export const handler = async (event) => {
-     console.log("SQS Event:", JSON.stringify(event));
-     try {
-       const stateMachineArn = process.env.STATE_MACHINE_ARN;
-       
-       for (const record of event.Records) {
-         // Parse body tin nhắn từ SQS (chứa event chuyển tiếp của EventBridge)
-         const body = JSON.parse(record.body);
-         console.log("Record Body:", JSON.stringify(body));
-         
-         const s3Bucket = body.detail.bucket.name;
-         const s3Key = body.detail.object.key;
-         
-         // Tách userId và documentId từ S3 key: raw/{userId}/{documentId}/original.pdf
-         const parts = s3Key.split("/");
-         const userId = parts[1];
-         const documentId = parts[2];
-         
-         const input = {
-           rawS3Bucket: s3Bucket,
-           rawS3Key: s3Key,
-           userId: userId,
-           documentId: documentId
-         };
-         
-         console.log("Starting Step Functions execution with input:", JSON.stringify(input));
-         
-         await sfnClient.send(new StartExecutionCommand({
-           stateMachineArn: stateMachineArn,
-           name: `${documentId}-${Date.now()}`,
-           input: JSON.stringify(input)
-         }));
-       }
-       
-       return { status: "SUCCESS" };
-     } catch (err) {
-       console.error("Error in Job Starter:", err);
-       throw err; // Quăng lỗi để SQS không xóa tin nhắn và thực hiện retry
-     }
-   };
-   ```
+{{< source-code file="services/functions/ingestion-job-starter/index.mjs" language="javascript" >}}
 
 #### Lab 9: Cấu hình Triggers SQS cho Job Starter Lambda
 1. Quay lại giao diện con Lambda `docuflow-dev-ingestion-job-starter-lambda`.

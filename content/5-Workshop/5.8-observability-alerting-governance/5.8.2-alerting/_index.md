@@ -1,14 +1,13 @@
 ---
-title: "5.8.2 SES, SNS & CloudWatch Alarms"
+title: "SES, SNS & CloudWatch Alarms"
 date: 2024-01-01
 weight: 2
 chapter: false
 pre: " <b> 5.8.2. </b> "
 ---
-
-# Configure Automatic Alerting with SES, SNS & CloudWatch Alarms
-
 To receive instant notifications when the processing system encounters an error or when there are low-confidence invoices requiring review, we will configure the SES email sending service, the SNS distribution channel, and set up 4 automated CloudWatch Alarms.
+
+After configuring SNS and SES, continue with **[Notification Trigger Lambda](5.8.2.1-notification-trigger-lambda/)** to publish `REVIEW_REQUIRED` and workflow failure messages from Step Functions.
 
 ---
 

@@ -5,9 +5,6 @@ weight: 1
 chapter: false
 pre: " <b> 5.1. </b> "
 ---
-
-#  DOCUFLOW AI
-
 ### 1. Giới thiệu giải pháp (Use case)
 Trong thời đại chuyển đổi số, việc nhập liệu thủ công các loại hóa đơn, biên nhận (invoice/receipt) vẫn là một điểm nghẽn lớn (pain point) đối với các phòng ban tài chính kế toán hoặc vận hành của doanh nghiệp (finance/SME operation teams). Quy trình nhập tay từ ảnh quét hay file PDF vào bảng tính Excel hoặc hệ thống ERP thường tốn thời gian, dễ gây sai sót về số liệu (sai tên nhà cung cấp, ngày xuất, số tiền, thuế phí, loại tiền tệ) và gặp rủi ro rò rỉ dữ liệu tài chính hoặc API key.
 
@@ -16,9 +13,22 @@ Trong thời đại chuyển đổi số, việc nhập liệu thủ công các 
 ### 2. Sơ đồ kiến trúc đã được duyệt (Approved Architecture)
 Kiến trúc của hệ thống DocuFlow AI đã được admin trong group duyệt bao gồm các khối: Edge/Frontend, Authentication & API, Document Ingestion, AI Processing Pipeline, Data Persistence, Observability, Alerting và Cross-cutting Security & Governance.
 
-Dưới đây là sơ đồ chi tiết của kiến trúc DocuFlow AI:
+**Hình 1 - Kiến trúc tổng quan DocuFlow AI**
 
-![Kiến trúc DocuFlow AI](/images/5-Workshop/5.1-Workshop-overview/architecture.jpg)
+![Kiến trúc tổng quan DocuFlow AI](/images/5-Workshop/architecture/DocuFlowAI-architecture.png)
+
+**Hình 2 - Kiến trúc chi tiết và luồng xử lý DocuFlow AI**
+
+![Kiến trúc chi tiết và luồng xử lý DocuFlow AI](/images/5-Workshop/architecture/DocuFlowAI-architecture-2.png)
+
+Luồng xử lý tổng thể của hệ thống:
+
+```text
+Frontend -> Cognito / API Gateway -> S3 Raw
+         -> EventBridge -> SQS -> Job Starter Lambda
+         -> Step Functions -> Validate -> Textract -> AI Proxy -> Confidence
+         -> DynamoDB metadata + S3 Processed results -> Review APIs
+```
 
 ### 3. Quy trình xử lý chính (Main Flow) và Kiến trúc xử lý bất đồng bộ
 Một trong những điểm mấu chốt và quan trọng nhất của kiến trúc này là **hệ thống không xử lý trực tiếp (đồng bộ) từ Frontend đến AI**.

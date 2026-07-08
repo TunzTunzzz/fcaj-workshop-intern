@@ -1,13 +1,10 @@
 ---
-title: "5.7.3 Cấu hình API Gateway"
+title: "Cấu hình API Gateway"
 date: 2024-01-01
 weight: 3
 chapter: false
 pre: " <b> 5.7.3. </b> "
 ---
-
-# Cấu hình API Gateway & Tích hợp Authorizer
-
 Trong phần này, chúng ta sẽ cấu hình Amazon API Gateway để làm cổng giao tiếp (API Endpoint) cho tất cả các Lambda functions đã tạo, đồng thời tích hợp xác thực người dùng bằng Cognito Authorizer.
 
 ---
@@ -79,15 +76,15 @@ Trong phần này, chúng ta sẽ cấu hình Amazon API Gateway để làm cổ
    
    ![image32.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image32.png)
 
-6. Thực hiện tương tự lần lượt với các method và gắn với lambda như sau:
+6. Thực hiện tương tự lần lượt với các method và gắn với Lambda như sau. Các route được đánh dấu **mở rộng** phụ thuộc vào ba Lambda mở rộng ở mục 5.7.2 và không bắt buộc trong MVP đã duyệt:
    
-   * `DELETE /documents` ➔ `docuflow-dev-data-delete-document-lambda`
+   * **Mở rộng:** `DELETE /documents` ➔ `docuflow-dev-data-delete-lambda`
      ![image33.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image33.png)
      ![image34.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image34.png)
      ![image35.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image35.png)
      ![image36.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image36.png)
      
-   * `DELETE /documents/{documentId}` ➔ `docuflow-dev-data-delete-document-lambda`
+   * **Mở rộng:** `DELETE /documents/{documentId}` ➔ `docuflow-dev-data-delete-lambda`
      ![image33.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image33.png)
      ![image34.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image34.png)
      ![image35.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image35.png)
@@ -100,7 +97,7 @@ Trong phần này, chúng ta sẽ cấu hình Amazon API Gateway để làm cổ
      ![image39.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image39.png)
      ![image36.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image36.png)
      
-   * `POST /documents/{documentId}/process` ➔ `docuflow-dev-ingestion-job-starter-lambda`
+   * **Mở rộng:** `POST /documents/{documentId}/process` ➔ `docuflow-dev-data-process-control-lambda`
      ![image40.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image40.png)
      ![image34.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image34.png)
      ![image41.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image41.png)
@@ -111,6 +108,13 @@ Trong phần này, chúng ta sẽ cấu hình Amazon API Gateway để làm cổ
      ![image34.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image34.png)
      ![image36.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image36.png)
      ![image43.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image43.png)
+
+   * **Mở rộng:** `POST /documents/{documentId}/retry` ➔ `docuflow-dev-data-process-control-lambda`
+   * `POST /documents/upload-url` ➔ `docuflow-dev-api-generate-upload-url-lambda`
+   * **Mở rộng:** `GET /notifications` ➔ `docuflow-dev-data-dashboard-lambda`
+   * **Mở rộng:** `PATCH /notifications/{notificationId}` ➔ `docuflow-dev-data-dashboard-lambda`
+   * **Mở rộng:** `GET /activity` ➔ `docuflow-dev-data-dashboard-lambda`
+   * **Mở rộng:** `GET /reports/summary` ➔ `docuflow-dev-data-dashboard-lambda`
 
 ---
 
@@ -160,11 +164,17 @@ Trong phần này, chúng ta sẽ cấu hình Amazon API Gateway để làm cổ
    
 3. Thực hiện tương tự cho các method còn lại:
    * `GET /documents`
-   * `DELETE /documents`
+   * `DELETE /documents` *(mở rộng)*
    * `GET /documents/{documentId}`
-   * `DELETE /documents/{documentId}`
-   * `POST /documents/{documentId}/process`
+   * `DELETE /documents/{documentId}` *(mở rộng)*
+   * `POST /documents/{documentId}/process` *(mở rộng)*
+   * `POST /documents/{documentId}/retry` *(mở rộng)*
    * `PATCH /documents/{documentId}/review`
+   * `POST /documents/upload-url`
+   * `GET /notifications` *(mở rộng)*
+   * `PATCH /notifications/{notificationId}` *(mở rộng)*
+   * `GET /activity` *(mở rộng)*
+   * `GET /reports/summary` *(mở rộng)*
 
 ---
 

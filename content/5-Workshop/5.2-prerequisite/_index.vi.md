@@ -6,7 +6,6 @@ chapter: false
 pre: " <b> 5.2. </b> "
 ---
 
-# Chuẩn bị môi trường
 
 ### 1. Mục tiêu (Goal)
 Đảm bảo người học truy cập thành công vào AWS Management Console, cài đặt các công cụ cần thiết cho Frontend và chuẩn bị tài liệu mẫu để kiểm thử trước khi tiến hành thực hiện các bài lab.
@@ -21,8 +20,7 @@ Người học cần cài đặt các công cụ sau trên máy cá nhân để 
 ### 3. Các bước thực hiện (Steps)
 1. **Truy cập AWS Console**: Đăng nhập vào tài khoản AWS được chỉ định cho buổi workshop thông qua giao diện **AWS Management Console** bằng thông tin tài khoản IAM User hoặc AWS IAM Identity Center được cung cấp. Đảm bảo vùng làm việc (Region) trên thanh công cụ AWS Console luôn được chọn là **ap-southeast-1** (Singapore).
 
-   *(Chụp màn hình giao diện Console hiển thị đúng Region Singapore và lưu vào `static/images/5-Workshop/5.2-prerequisite/aws-console.png`)*
-   ![AWS Console Access](/images/5-Workshop/5.2-prerequisite/aws-console.png)
+   **Điểm kiểm tra:** Xác nhận Console đang sử dụng `ap-southeast-1` trước khi tạo tài nguyên.
 
 2. **Kiểm tra công cụ chạy local**: Đảm bảo máy cá nhân chạy được các lệnh kiểm tra phiên bản:
    ```bash
@@ -30,16 +28,14 @@ Người học cần cài đặt các công cụ sau trên máy cá nhân để 
    npm --version
    ```
 
-   *(Chụp kết quả kiểm tra phiên bản trên terminal và lưu vào `static/images/5-Workshop/5.2-prerequisite/node-version.png`)*
-   ![Node and NPM version](/images/5-Workshop/5.2-prerequisite/node-version.png)
+   **Điểm kiểm tra:** Cả hai lệnh phải trả về số phiên bản hợp lệ.
 
 3. **Chuẩn bị các tệp tin mẫu (Sample files)**: Tải hoặc chuẩn bị sẵn ít nhất 3 loại tệp tin sau để test luồng xử lý:
    * Một ảnh/PDF hóa đơn rõ ràng (để test nhánh thành công `EXTRACTED`).
    * Một ảnh hóa đơn mờ hoặc thiếu thông tin quan trọng (để test nhánh `REVIEW_REQUIRED`).
    * Một file không đúng định dạng (ví dụ tệp `.txt` hoặc dung lượng quá lớn) để kiểm tra luồng lỗi `FAILED`.
 
-   *(Chụp danh sách các file mẫu đã chuẩn bị trên máy local và lưu vào `static/images/5-Workshop/5.2-prerequisite/sample-files.png`)*
-   ![Sample Files](/images/5-Workshop/5.2-prerequisite/sample-files.png)
+   **Điểm kiểm tra:** Giữ sẵn ba tệp mẫu để sử dụng trong phần kiểm thử End-to-End.
 
 4. **Thống nhất Quy tắc đặt tên (Naming Convention)**: 
    * Mọi tài nguyên khởi tạo trong stacks phải bắt đầu bằng prefix: `docuflow-dev-*`.

@@ -1,14 +1,11 @@
 ---
-title: "5.5.5 Step Functions Workflow"
+title: "Step Functions Workflow"
 date: 2024-01-01
 weight: 5
 chapter: false
 pre: " <b> 5.5.5. </b> "
 ---
-
-# Thiết lập AWS Step Functions State Machine
-
-Chúng ta sẽ sử dụng dịch vụ AWS Step Functions để thiết kế luồng xử lý tự động (orchestration flow) kết nối tuần tự 4 hàm Lambda vừa tạo ở các bước trên.
+Chúng ta sẽ sử dụng AWS Step Functions để điều phối bốn Lambda xử lý AI cốt lõi, lưu kết quả và gọi Notification Trigger Lambda cho nhánh cần review hoặc thất bại.
 
 ---
 
@@ -16,86 +13,49 @@ Chúng ta sẽ sử dụng dịch vụ AWS Step Functions để thiết kế lu�
 
 1. **Truy cập dịch vụ Step Functions**:
    * Tại thanh tìm kiếm trên cùng của AWS Console, gõ **Step Functions** ➔ Chọn dịch vụ **Step Functions**.
+   ![Tìm dịch vụ Step Functions](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image52.png)
    * Ở menu dọc bên trái, bấm chọn **State machines** ➔ Nhấn nút **Create state machine**.
+   ![Danh sách State machines](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image53.png)
+   ![Tạo State Machine mới](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image54.png)
+   ![Chọn tạo State Machine trống](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image55.png)
 
 2. **Cấu hình mã định nghĩa**:
    * Chọn **Write in JSON** (ASL Editor - Amazon States Language) để dán code định nghĩa luồng.
-   * Xóa đoạn JSON mặc định và dán đoạn ASL JSON chuẩn dưới đây vào (Lưu ý: Thay thế các phần `603199863187` bằng **AWS Account ID** thực tế của bạn):
+   ![Mở workflow editor](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image56.png)
+   ![Chuyển sang ASL JSON editor](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image57.png)
+   * Xóa JSON mặc định và dán định nghĩa ASL bên dưới.
+   * Nếu triển khai bằng AWS SAM, các giá trị `${...}` được truyền qua `DefinitionSubstitutions`.
+   * Nếu tạo State Machine thủ công trên Console, thay `${WorkflowValidateFunctionArn}`, `${TextractFunctionArn}`, `${AiProxyFunctionArn}`, `${ConfidenceStatusFunctionArn}`, `${NotificationTriggerFunctionArn}`, `${DocumentsTableName}` và `${ProcessedBucketName}` bằng giá trị đã triển khai trước khi lưu.
 
-```json
-{
-  "Comment": "DocuFlow AI Invoice Processing Workflow",
-  "StartAt": "ValidateDocument",
-  "States": {
-    "ValidateDocument": {
-      "Type": "Task",
-      "Resource": "arn:aws:lambda:ap-southeast-1:603199863187:function:docuflow-dev-ingestion-validate-lambda",
-      "Catch": [
-        {
-          "ErrorEquals": ["States.ALL"],
-          "Next": "FailedWorkflow"
-        }
-      ],
-      "Next": "ExtractTextract"
-    },
-    "ExtractTextract": {
-      "Type": "Task",
-      "Resource": "arn:aws:lambda:ap-southeast-1:603199863187:function:docuflow-dev-ai-textract-lambda",
-      "Catch": [
-        {
-          "ErrorEquals": ["States.ALL"],
-          "Next": "FailedWorkflow"
-        }
-      ],
-      "Next": "AIProxyNormalization"
-    },
-    "AIProxyNormalization": {
-      "Type": "Task",
-      "Resource": "arn:aws:lambda:ap-southeast-1:603199863187:function:docuflow-dev-ai-proxy-lambda",
-      "Catch": [
-        {
-          "ErrorEquals": ["States.ALL"],
-          "Next": "FailedWorkflow"
-        }
-      ],
-      "Next": "CalculateConfidenceAndStatus"
-    },
-    "CalculateConfidenceAndStatus": {
-      "Type": "Task",
-      "Resource": "arn:aws:lambda:ap-southeast-1:603199863187:function:docuflow-dev-ai-confidence-status-lambda",
-      "Catch": [
-        {
-          "ErrorEquals": ["States.ALL"],
-          "Next": "FailedWorkflow"
-        }
-      ],
-      "Next": "FinishedWorkflow"
-    },
-    "FinishedWorkflow": {
-      "Type": "Succeed"
-    },
-    "FailedWorkflow": {
-      "Type": "Fail",
-      "Cause": "Invoice processing workflow failed",
-      "Error": "WorkflowFailed"
-    }
-  }
-}
-```
+{{< source-code file="services/statemachines/processing.asl.json" language="json" >}}
+
+   ![Dán định nghĩa ASL vào JSON editor](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image58.png)
 
 3. **Cấu hình Quyền hạn (Permissions) và Hoàn tất**:
    * Nhấn **Next**.
-   * **State machine name**: Đặt tên chuẩn `docuflow-dev-invoice-processing-workflow`.
+   * **State machine name**: Đặt tên chuẩn `docuflow-dev-workflow-processing-state-machine`.
    * **Permissions**: Chọn **Choose an existing role** ➔ Trỏ đến `docuflow-dev-workflow-stepfunctions-role` đã tạo ở bước IAM.
+   ![Cấu hình tên và quyền State Machine](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image59.png)
+   ![Xác nhận vai trò IAM](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image60.png)
    * Nhấn **Create state machine**.
+   ![Tạo State Machine thành công](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image61.png)
+   ![State Machine xuất hiện trong danh sách](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image62.png)
+   ![Chi tiết State Machine](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image63.png)
 
 4. **Đồng bộ biến môi trường cho Job Starter Lambda**:
-   * Sao chép **ARN** của State Machine vừa tạo (Ví dụ: `arn:aws:states:ap-southeast-1:603199863187:stateMachine:docuflow-dev-invoice-processing-workflow`).
+   * Sao chép **ARN** của State Machine vừa tạo (Ví dụ: `arn:aws:states:ap-southeast-1:<AWS_ACCOUNT_ID>:stateMachine:docuflow-dev-workflow-processing-state-machine`).
    * Quay lại cấu hình hàm Lambda `docuflow-dev-ingestion-job-starter-lambda`.
    * Vào tab **Configuration** ➔ **Environment variables** ➔ Bấm **Edit** ➔ Cập nhật giá trị biến `STATE_MACHINE_ARN` bằng chuỗi ARN của State Machine bạn vừa sao chép. Nhấn **Save**.
 
 ---
 
 ### Minh chứng thực hành (Evidence)
-*(Lưu ảnh sơ đồ State Machine Graph thiết kế thành công vào `static/images/5-Workshop/5.6-ai-processing-workflow/5.6.5-stepfunctions/stepfunctions-graph.png`)*
-![Step Functions Graph](/images/5-Workshop/5.6-ai-processing-workflow/5.6.5-stepfunctions/stepfunctions-graph.png)
+
+Xác nhận sơ đồ State Machine có bốn tác vụ Lambda theo đúng thứ tự cùng trạng thái kết thúc thành công và thất bại.
+
+![Chạy thử State Machine với input mẫu](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image64.png)
+![Execution thành công](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image65.png)
+![Sơ đồ graph execution thành công](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image66.png)
+![Input và output của execution](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image67.png)
+![Chạy thử nhánh thất bại](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image68.png)
+![Execution thất bại được ghi nhận](/images/5-Workshop/5.5-ai-processing-workflow/5.5.5-stepfunctions/image69.png)

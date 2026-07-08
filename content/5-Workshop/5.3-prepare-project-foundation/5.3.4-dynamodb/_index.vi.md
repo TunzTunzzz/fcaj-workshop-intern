@@ -1,13 +1,10 @@
 ---
-title: "5.3.4 Cấu hình DynamoDB Table"
+title: "Cấu hình DynamoDB Table"
 date: 2024-01-01
 weight: 4
 chapter: false
 pre: " <b> 5.3.4. </b> "
 ---
-
-# TẠO CƠ SỞ DỮ LIỆU VỚI AMAZON DYNAMODB
-
 Amazon DynamoDB là gì? Khác với ổ cứng S3 dùng để chứa file, DynamoDB là một Cơ sở dữ liệu (Database) cực nhanh dùng để lưu dạng bảng biểu. Bảng này sẽ lưu trữ các thông tin siêu dữ liệu (metadata) ngắn gọn như: mã chứng từ, lịch sử xử lý, số tiền, và trạng thái để ứng dụng Frontend có thể tìm kiếm và hiển thị nhanh chóng.
 
 1. Truy cập dịch vụ DynamoDB:

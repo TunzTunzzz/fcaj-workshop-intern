@@ -5,12 +5,6 @@ weight: 5
 chapter: false
 pre: " <b> 5. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
-
-# Practical Guide - DocuFlow AI
-
 #### Overview
 
 In this workshop, we will build the **DocuFlow AI** solution – an intelligent invoice and document processing automation system on AWS.
@@ -28,4 +22,4 @@ The system leverages serverless services including **Amazon S3**, **Amazon Dynam
 7. [Store result & review flow](5.7-store-result-review-flow/)
 8. [Observability, alerting & governance](5.8-observability-alerting-governance/)
 9. [End-to-end testing](5.9-end-to-end-testing/)
-10. [Clean up resources](5.10-clean-up/)
+10. [Clean up resources](5.10-clean-up/)

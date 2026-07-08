@@ -1,13 +1,10 @@
 ---
-title: "5.3.6 Cấu hình Budget Alerts"
+title: "Cấu hình Budget Alerts"
 date: 2024-01-01
 weight: 6
 chapter: false
 pre: " <b> 5.3.6. </b> "
 ---
-
-# Cấu hình Cảnh báo ngân sách (AWS Budgets)
-
 Để quản lý chặt chẽ ngân sách dự án và bảo vệ tài khoản khỏi các chi phí phát sinh bất thường, chúng ta sẽ thiết lập 3 loại Budget cảnh báo chi tiêu hàng tháng qua Email.
 
 ---

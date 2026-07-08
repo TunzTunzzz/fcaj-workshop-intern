@@ -1,13 +1,10 @@
 ---
-title: "5.8.4 Governance & Audit Logs"
+title: "Governance & Audit Logs"
 date: 2024-01-01
 weight: 4
 chapter: false
 pre: " <b> 5.8.4. </b> "
 ---
-
-# Kiểm toán tài khoản với AWS CloudTrail
-
 Để ghi lại lịch sử hoạt động, kiểm vết API và theo dõi mọi thao tác thay đổi cấu hình trên tài khoản AWS của dự án (Audit Logging), chúng ta sẽ thiết lập đường giám sát với AWS CloudTrail.
 
 ---
@@ -47,4 +44,3 @@ Do tiêu chuẩn an ninh không cho phép lưu chung log hệ thống với dữ
 ![image109.png](/images/5-Workshop/5.8-observability-alerting-governance/5.8.4-governance/image109.png)
 Hệ thống sẽ hiển thị trạng thái luồng log là **Logging** với dấu chấm xanh lục. Kể từ lúc này, mọi hoạt động của nhóm AeroOps trên tài khoản AWS đều có bằng chứng audit không thể chối cãi!
 ![image110.png](/images/5-Workshop/5.8-observability-alerting-governance/5.8.4-governance/image110.png)
-![image111.png](/images/5-Workshop/5.8-observability-alerting-governance/5.8.4-governance/image111.png)

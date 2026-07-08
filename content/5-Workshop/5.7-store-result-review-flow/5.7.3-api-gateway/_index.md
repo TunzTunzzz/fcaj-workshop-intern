@@ -1,13 +1,10 @@
 ---
-title: "5.7.3 API Gateway Configuration"
+title: "API Gateway Configuration"
 date: 2024-01-01
 weight: 3
 chapter: false
 pre: " <b> 5.7.3. </b> "
 ---
-
-# API Gateway & Authorizer Integration
-
 In this section, we will configure Amazon API Gateway to act as the primary endpoint for all deployed Lambda functions. Additionally, we will secure the API by integrating a Cognito Authorizer.
 
 ---
@@ -79,15 +76,15 @@ In this section, we will configure Amazon API Gateway to act as the primary endp
    
    ![image32.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image32.png)
 
-6. Repeat the process to create the following methods and map them to their respective Lambda functions:
+6. Repeat the process to create the following methods and map them to their respective Lambda functions. Routes marked **optional extension** depend on the three extended Lambdas from section 5.7.2 and are not required for the approved MVP:
    
-   * `DELETE /documents` ➔ `docuflow-dev-data-delete-document-lambda`
+   * **Optional extension:** `DELETE /documents` ➔ `docuflow-dev-data-delete-lambda`
      ![image33.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image33.png)
      ![image34.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image34.png)
      ![image35.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image35.png)
      ![image36.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image36.png)
      
-   * `DELETE /documents/{documentId}` ➔ `docuflow-dev-data-delete-document-lambda`
+   * **Optional extension:** `DELETE /documents/{documentId}` ➔ `docuflow-dev-data-delete-lambda`
      ![image33.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image33.png)
      ![image34.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image34.png)
      ![image35.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image35.png)
@@ -100,7 +97,7 @@ In this section, we will configure Amazon API Gateway to act as the primary endp
      ![image39.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image39.png)
      ![image36.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image36.png)
      
-   * `POST /documents/{documentId}/process` ➔ `docuflow-dev-ingestion-job-starter-lambda`
+   * **Optional extension:** `POST /documents/{documentId}/process` ➔ `docuflow-dev-data-process-control-lambda`
      ![image40.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image40.png)
      ![image34.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image34.png)
      ![image41.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image41.png)
@@ -111,6 +108,13 @@ In this section, we will configure Amazon API Gateway to act as the primary endp
      ![image34.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image34.png)
      ![image36.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image36.png)
      ![image43.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.3-api-gateway/image43.png)
+
+   * **Optional extension:** `POST /documents/{documentId}/retry` ➔ `docuflow-dev-data-process-control-lambda`
+   * `POST /documents/upload-url` ➔ `docuflow-dev-api-generate-upload-url-lambda`
+   * **Optional extension:** `GET /notifications` ➔ `docuflow-dev-data-dashboard-lambda`
+   * **Optional extension:** `PATCH /notifications/{notificationId}` ➔ `docuflow-dev-data-dashboard-lambda`
+   * **Optional extension:** `GET /activity` ➔ `docuflow-dev-data-dashboard-lambda`
+   * **Optional extension:** `GET /reports/summary` ➔ `docuflow-dev-data-dashboard-lambda`
 
 ---
 
@@ -160,11 +164,17 @@ In this section, we will configure Amazon API Gateway to act as the primary endp
    
 3. Repeat this process for all other methods:
    * `GET /documents`
-   * `DELETE /documents`
+   * `DELETE /documents` *(optional extension)*
    * `GET /documents/{documentId}`
-   * `DELETE /documents/{documentId}`
-   * `POST /documents/{documentId}/process`
+   * `DELETE /documents/{documentId}` *(optional extension)*
+   * `POST /documents/{documentId}/process` *(optional extension)*
+   * `POST /documents/{documentId}/retry` *(optional extension)*
    * `PATCH /documents/{documentId}/review`
+   * `POST /documents/upload-url`
+   * `GET /notifications` *(optional extension)*
+   * `PATCH /notifications/{notificationId}` *(optional extension)*
+   * `GET /activity` *(optional extension)*
+   * `GET /reports/summary` *(optional extension)*
 
 ---
 

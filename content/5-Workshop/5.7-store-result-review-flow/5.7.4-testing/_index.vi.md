@@ -1,13 +1,10 @@
 ---
-title: "5.7.4 Thử nghiệm & Báo cáo"
+title: "Thử nghiệm & Báo cáo"
 date: 2024-01-01
 weight: 4
 chapter: false
 pre: " <b> 5.7.4. </b> "
 ---
-
-# Thử nghiệm API & Xuất báo cáo thống kê
-
 Chúng ta sẽ thiết lập dữ liệu mẫu (Mock Data) để kiểm thử độc lập cụm API quản lý dữ liệu, sau đó sử dụng AWS CloudShell để chạy script truy vấn báo cáo thống kê chứng từ.
 
 ---

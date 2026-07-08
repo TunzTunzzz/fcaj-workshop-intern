@@ -1,13 +1,10 @@
 ---
-title: "5.6.4 Create and Test Step Functions Skeleton"
+title: "Create and Test Step Functions Skeleton"
 date: 2024-01-01
 weight: 4
 chapter: false
 pre: " <b> 5.6.4. </b> "
 ---
-
-# Create and Test Step Functions Skeleton
-
 #### Create Step Functions skeleton
 *Goal: Create a Workflow skeleton (Mock data) to test the ability to call from Lambda to Step Functions before integrating real AI logic.*
 1. Open Step Functions: Search **Step Functions** → **State machines** → Click **Create state machine**.

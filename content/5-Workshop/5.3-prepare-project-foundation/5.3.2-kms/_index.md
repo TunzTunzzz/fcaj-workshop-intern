@@ -1,13 +1,10 @@
 ---
-title: "5.3.2 Initialize AWS KMS CMK"
+title: "Initialize AWS KMS CMK"
 date: 2024-01-01
 weight: 2
 chapter: false
 pre: " <b> 5.3.2. </b> "
 ---
-
-# Initialize Master Encryption Key (AWS KMS CMK)
-
 We will create a symmetric Customer Managed Key to encrypt all data in S3, DynamoDB, and Secrets Manager.
 
 ---

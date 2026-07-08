@@ -5,13 +5,12 @@ weight: 4
 chapter: false
 pre: " <b> 5.4. </b> "
 ---
-
-# Thiết lập & Chạy Frontend
-
 ### 1. Mục tiêu (Goal)
 Tải mã nguồn Frontend (React/Vite), cấu hình biến môi trường kết nối với các tài nguyên AWS đã tạo ở bước 3, khởi chạy ứng dụng local và xác minh các luồng đăng nhập (Cognito), sinh Presigned URL để tải hóa đơn gốc lên S3 Raw Bucket.
 
 ### 2. Các bước thực hiện (Steps)
+
+Phần này chuẩn bị frontend để chạy local. Sau khi backend API đã sẵn sàng, tiếp tục với **[5.4.1 Deploy Frontend with AWS Amplify Hosting](5.4.1-deploy-amplify/)** để publish frontend production URL.
 
 #### Bước 1: Khởi tạo cụm Cognito User Pool
 Để người dùng đăng nhập bằng JWT bảo mật trước khi tải file:
@@ -100,10 +99,10 @@ Tải mã nguồn Frontend (React/Vite), cấu hình biến môi trường kết
    * **Nhân viên Tài chính (Finance):** `finance@docuflow.ai` / `password` (Chỉ xem và upload hóa đơn của mình, thực hiện review)
    * **Quản trị viên (Admin):** `admin@docuflow.ai` / `password` (Kiểm tra toàn bộ hệ thống, truy cập Operations)
 
-#### Bước 5: Khởi tạo Lambda Sinh URL Tải lên (`docuflow-dev-api-upload-url-lambda`)
+#### Bước 5: Khởi tạo Lambda Sinh URL Tải lên (`docuflow-dev-api-generate-upload-url-lambda`)
 Hàm này sẽ nhận event từ Frontend, tạo một S3 Presigned URL và tạo bản ghi metadata ban đầu trong DynamoDB.
 1. Truy cập **Lambda** -> nhấn **Create function** -> **Author from scratch**.
-2. **Function name**: `docuflow-dev-api-upload-url-lambda`.
+2. **Function name**: `docuflow-dev-api-generate-upload-url-lambda`.
 3. **Runtime**: Chọn `Node.js 18.x` hoặc cao hơn.
 4. **Role**: Chọn **Use an existing role** -> chọn role `docuflow-dev-security-upload-url-role`.
 5. Bấm **Create function**.
@@ -112,69 +111,7 @@ Hàm này sẽ nhận event từ Frontend, tạo một S3 Presigned URL và tạ
    * `DOCUFLOW_DEV_TABLE_NAME` = `docuflow-dev-documents-table`
    * `DOCUFLOW_DEV_RAW_BUCKET` = `docuflow-dev-raw-<MÃ_ACCOUNT_AWS>-ap-southeast-1`
 8. Quay lại tab **Code**, copy đoạn code sau, dán đè vào `index.mjs` và nhấn **Deploy**:
-   ```javascript
-   import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-   import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-   import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
-
-   const s3Client = new S3Client({ region: "ap-southeast-1" });
-   const ddbClient = new DynamoDBClient({ region: "ap-southeast-1" });
-
-   export const handler = async (event) => {
-     console.log("Event:", JSON.stringify(event));
-     try {
-       // Lấy userId từ Cognito Authorizer Claims, mặc định test là user-001
-       const userId = event.requestContext?.authorizer?.claims?.sub || "user-001";
-       const documentId = `doc-${Date.now()}`;
-       const rawBucket = process.env.DOCUFLOW_DEV_RAW_BUCKET;
-       const tableName = process.env.DOCUFLOW_DEV_TABLE_NAME;
-       
-       const key = `raw/${userId}/${documentId}/original.pdf`;
-       
-       // 1. Sinh S3 presigned URL để frontend upload trực tiếp
-       const command = new PutObjectCommand({
-         Bucket: rawBucket,
-         Key: key,
-         ContentType: "application/pdf"
-       });
-       
-       const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 900 });
-       
-       // 2. Khởi tạo metadata trong DynamoDB dạng OFF-LOADING
-       await ddbClient.send(new PutItemCommand({
-         TableName: tableName,
-         Item: {
-           PK: { S: `USER#${userId}` },
-           SK: { S: `DOC#${documentId}` },
-           documentId: { S: documentId },
-           userId: { S: userId },
-           status: { S: "PROCESSING" },
-           s3RawPath: { S: key },
-           createdAt: { S: new Date().toISOString() },
-           GSI1PK: { S: "STATUS#PROCESSING" },
-           GSI1SK: { S: new Date().toISOString() }
-         }
-       }));
-       
-       return {
-         statusCode: 200,
-         headers: {
-           "Access-Control-Allow-Origin": "*",
-           "Access-Control-Allow-Headers": "Content-Type,Authorization",
-           "Content-Type": "application/json"
-         },
-         body: JSON.stringify({ uploadUrl, documentId, key })
-       };
-     } catch (err) {
-       console.error(err);
-       return {
-         statusCode: 500,
-         headers: { "Access-Control-Allow-Origin": "*" },
-         body: JSON.stringify({ error: err.message })
-       };
-     }
-   };
-   ```
+{{< source-code file="services/functions/generate-upload-url/index.mjs" language="javascript" >}}
 
 #### Bước 5: Chạy ứng dụng local & Kiểm tra tính năng
 1. Khởi động Frontend:
@@ -192,18 +129,10 @@ Hàm này sẽ nhận event từ Frontend, tạo một S3 Presigned URL và tạ
 * Nút tải tài liệu kích hoạt Lambda tạo Presigned URL thành công và đẩy tệp gốc trực tiếp lên S3 Raw Bucket.
 
 ### 4. Minh chứng thực hành (Evidence)
-* **Ảnh giao diện ứng dụng React chạy local:**
-  *(Lưu ảnh vào `static/images/5-Workshop/5.4-setup-and-run-frontend/frontend-local.png`)*
-  ![Local Frontend](/images/5-Workshop/5.4-setup-and-run-frontend/frontend-local.png)
 
-* **Ảnh màn hình đăng nhập Cognito thành công:**
-  *(Lưu ảnh vào `static/images/5-Workshop/5.4-setup-and-run-frontend/login.png`)*
-  ![Login Screen](/images/5-Workshop/5.4-setup-and-run-frontend/login.png)
+Trước khi tiếp tục, hãy xác nhận:
 
-* **Ảnh Frontend thông báo tải tệp thành công:**
-  *(Lưu ảnh vào `static/images/5-Workshop/5.4-setup-and-run-frontend/upload-success.png`)*
-  ![Upload Success UI](/images/5-Workshop/5.4-setup-and-run-frontend/upload-success.png)
-
-* **Ảnh tệp tin xuất hiện trong S3 Raw Bucket:**
-  *(Lưu ảnh vào `static/images/5-Workshop/5.4-setup-and-run-frontend/s3-raw-object.png`)*
-  ![S3 Raw Object](/images/5-Workshop/5.4-setup-and-run-frontend/s3-raw-object.png)
+- Ứng dụng React chạy local mà không có lỗi trên console.
+- Đăng ký và đăng nhập Cognito thành công.
+- Frontend thông báo tải tệp thành công.
+- Tệp đã xuất hiện đúng key trong S3 Raw Bucket.

@@ -1,13 +1,10 @@
 ---
-title: "5.6.3 Tạo EventBridge rule và Test"
+title: "Tạo EventBridge rule và Test"
 date: 2024-01-01
 weight: 3
 chapter: false
 pre: " <b> 5.6.3. </b> "
 ---
-
-# Tạo EventBridge rule và Test
-
 #### Tạo EventBridge rule: S3 Raw → SQS
 1. Mở EventBridge chọn: **Amazon EventBridge**. Ở menu trái, chọn: **Rules** → Bấm: **Create rule**
 ![image27.png](/images/5-Workshop/5.6-document-ingestion-pipeline/image27.png)

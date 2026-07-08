@@ -1,14 +1,13 @@
 ---
-title: "5.8.2 SES, SNS & Cảnh báo Alarms"
+title: "SES, SNS & Cảnh báo Alarms"
 date: 2024-01-01
 weight: 2
 chapter: false
 pre: " <b> 5.8.2. </b> "
 ---
-
-# Cấu hình Cảnh báo tự động với SES, SNS & CloudWatch Alarms
-
 Để nhận thông báo tức thời khi hệ thống xử lý xảy ra lỗi hoặc khi có hóa đơn điểm tin cậy thấp cần duyệt, chúng ta sẽ cấu hình dịch vụ gửi email SES, kênh phân phối SNS và thiết lập 4 báo động tự động CloudWatch Alarms.
+
+Sau khi cấu hình SNS và SES, tiếp tục với **[Notification Trigger Lambda](5.8.2.1-notification-trigger-lambda/)** để gửi cảnh báo `REVIEW_REQUIRED` và lỗi workflow từ Step Functions.
 
 ---
 

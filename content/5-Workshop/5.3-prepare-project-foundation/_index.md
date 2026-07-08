@@ -6,7 +6,6 @@ chapter: false
 pre: " <b> 5.3. </b> "
 ---
 
-# Prepare Project Foundation
 
 ### Goal
 Initialize and configure all foundational storage resources (S3), databases (DynamoDB), security key management (KMS & Secrets Manager), detailed IAM permissions, and set up cost alerts before building the main processing pipeline.

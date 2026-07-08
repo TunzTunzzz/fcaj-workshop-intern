@@ -1,13 +1,10 @@
 ---
-title: "5.7.1 Mô hình dữ liệu & Offloading"
+title: "Mô hình dữ liệu & Offloading"
 date: 2024-01-01
 weight: 1
 chapter: false
 pre: " <b> 5.7.1. </b> "
 ---
-
-# Mô hình dữ liệu (Data Model) & Kiến trúc Offloading
-
 Hệ thống lưu trữ và quản lý kết quả bóc tách chứng từ của DocuFlow AI áp dụng nguyên lý **Single-Table Design** trên Amazon DynamoDB kết hợp với mô hình **Offloading** (phân tách dữ liệu lớn) lưu trên S3 để tối ưu hóa hiệu năng, chi phí và vượt qua các giới hạn vật lý của cơ sở dữ liệu NoSQL.
 
 ---
@@ -59,10 +56,6 @@ Hệ thống lưu trữ và quản lý kết quả bóc tách chứng từ của
 ---
 
 ### Minh chứng thực hành (Evidence)
-* **Ảnh cấu hình bản ghi metadata được lưu trữ trên DynamoDB Console:**
-  *(Lưu ảnh vào `static/images/5-Workshop/5.7-store-result-review-flow/5.7.1-persistence/dynamodb-item.png`)*
-  ![DynamoDB Item](/images/5-Workshop/5.7-store-result-review-flow/5.7.1-persistence/dynamodb-item.png)
 
-* **Ảnh tệp tin kết quả bóc tách result.json lưu trữ trên S3 Processed Bucket:**
-  *(Lưu ảnh vào `static/images/5-Workshop/5.7-store-result-review-flow/5.7.1-persistence/s3-processed-result.png`)*
-  ![S3 Processed JSON](/images/5-Workshop/5.7-store-result-review-flow/5.7.1-persistence/s3-processed-result.png)
+- Kiểm tra bản ghi DynamoDB có đủ khóa metadata và trạng thái mong đợi.
+- Kiểm tra `result.json` tồn tại đúng prefix trong S3 Processed Bucket.

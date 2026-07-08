@@ -1,13 +1,10 @@
 ---
-title: "5.6.3 Create EventBridge rule and Test"
+title: "Create EventBridge rule and Test"
 date: 2024-01-01
 weight: 3
 chapter: false
 pre: " <b> 5.6.3. </b> "
 ---
-
-# Create EventBridge rule and Test
-
 #### Create EventBridge rule: S3 Raw → SQS
 1. Open EventBridge and select: **Amazon EventBridge**. On the left menu, select: **Rules** → Click: **Create rule**.
 ![image27.png](/images/5-Workshop/5.6-document-ingestion-pipeline/image27.png)

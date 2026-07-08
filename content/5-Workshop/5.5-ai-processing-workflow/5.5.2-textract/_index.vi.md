@@ -1,13 +1,10 @@
 ---
-title: "5.5.2 Textract Lambda"
+title: "Textract Lambda"
 date: 2024-01-01
 weight: 2
 chapter: false
 pre: " <b> 5.5.2. </b> "
 ---
-
-# Hàm Textract Lambda (`docuflow-dev-ai-textract-lambda`)
-
 Hàm này nhận đầu vào từ Step Functions, gọi API `AnalyzeExpense` của Amazon Textract để bóc tách thông tin thô, sau đó sử dụng bộ từ điển ánh xạ để định dạng lại dữ liệu thô đưa sang bước chuẩn hóa AI.
 
 ---
@@ -23,7 +20,7 @@ Hàm này nhận đầu vào từ Step Functions, gọi API `AnalyzeExpense` c�
    
    ![image2.png](/images/5-Workshop/5.5-ai-processing-workflow/5.5.2-textract/image2.png)
    
-   * Ở ô **Function name**: Nhập `docuflow-dev-ai-textract-lambda` hoặc đặt tên bạn thích.
+   * Ở ô **Function name**: Nhập chính xác `docuflow-dev-ai-textract-lambda`.
    
    ![image3.png](/images/5-Workshop/5.5-ai-processing-workflow/5.5.2-textract/image3.png)
    
@@ -64,142 +61,7 @@ Hàm này nhận đầu vào từ Step Functions, gọi API `AnalyzeExpense` c�
 3. **Triển khai Code**:
    * Chuyển sang lại tab **Code** bạn hãy copy toàn bộ đoạn code dưới đây, dán đè lên code cũ trong AWS Console và nhấn **Deploy**:
 
-```javascript
-import { TextractClient, AnalyzeExpenseCommand } from "@aws-sdk/client-textract";
-
-// Khởi tạo Textract Client
-const textractClient = new TextractClient({ region: "ap-southeast-1" });
-
-// ==========================================
-// BỘ TỪ ĐIỂN ÁNH XẠ (MAPPING DICTIONARIES)
-// ==========================================
-
-// Ánh xạ Summary Fields từ Textract sang chuẩn DocuFlow
-const summaryFieldMap = {
-  "VENDOR_NAME": "vendorName",
-  "INVOICE_RECEIPT_DATE": "invoiceDate",
-  "INVOICE_RECEIPT_ID": "invoiceNumber",
-  "DUE_DATE": "dueDate",
-  "SUBTOTAL": "subtotalAmount",
-  "TAX": "taxAmount",
-  "TOTAL": "totalAmount"
-};
-
-// Ánh xạ Line Item Fields từ Textract sang chuẩn DocuFlow
-const lineItemFieldMap = {
-  "ITEM": "description",
-  "QUANTITY": "quantity",
-  "UNIT_PRICE": "unitPriceAmount",
-  "PRICE": "totalAmount",
-  "TAX": "taxAmount"
-};
-
-export const handler = async (event) => {
-  console.log("Received event from Step Functions:", JSON.stringify(event, null, 2));
-
-  try {
-    const { rawS3Bucket, rawS3Key } = event;
-
-    if (!rawS3Bucket || !rawS3Key) {
-      throw new Error("Missing rawS3Bucket or rawS3Key in event payload");
-    }
-
-    // Trích xuất Document ID từ S3 Key
-    const parts = rawS3Key.split('/');
-    const documentId = parts.length >= 3 ? parts[2] : "unknown-doc-id";
-
-    // 1. Gọi Textract AnalyzeExpense
-    const command = new AnalyzeExpenseCommand({
-      Document: {
-        S3Object: {
-          Bucket: rawS3Bucket,
-          Name: rawS3Key
-        }
-      }
-    });
-
-    const textractResponse = await textractClient.send(command);
-
-    // 2. Parse dữ liệu dựa trên Từ điển ánh xạ
-    const summaryFields = {};
-    const lineItems = [];
-
-    // Lấy Document đầu tiên nếu có
-    const doc = textractResponse.ExpenseDocuments?.[0];
-
-    if (doc) {
-      // Xử lý Summary Fields
-      if (doc.SummaryFields) {
-        for (const field of doc.SummaryFields) {
-          const textractKey = field.Type?.Text;
-          const valueDetection = field.ValueDetection;
-
-          if (textractKey && valueDetection) {
-            const docuflowKey = summaryFieldMap[textractKey];
-
-            // Chỉ trích xuất những field có trong danh sách map, bỏ qua field lạ
-            if (docuflowKey) {
-              summaryFields[docuflowKey] = {
-                value: valueDetection.Text,
-                // Chuẩn hóa confidenceScore về 0-1
-                confidenceScore: valueDetection.Confidence / 100
-              };
-            }
-          }
-        }
-      }
-
-      // Xử lý Line Items
-      if (doc.LineItemGroups) {
-        for (const group of doc.LineItemGroups) {
-          if (group.LineItems) {
-            for (const lineItem of group.LineItems) {
-              if (lineItem.LineItemExpenseFields) {
-                const parsedItem = {};
-
-                for (const field of lineItem.LineItemExpenseFields) {
-                  const textractKey = field.Type?.Text;
-                  const valueDetection = field.ValueDetection;
-
-                  if (textractKey && valueDetection) {
-                    const docuflowKey = lineItemFieldMap[textractKey];
-
-                    if (docuflowKey) {
-                      parsedItem[docuflowKey] = {
-                        value: valueDetection.Text,
-                        // Chuẩn hóa confidenceScore về 0-1
-                        confidenceScore: valueDetection.Confidence / 100
-                      };
-                    }
-                  }
-                }
-
-                // Nếu item có dữ liệu thì mới push vào mảng
-                if (Object.keys(parsedItem).length > 0) {
-                  lineItems.push(parsedItem);
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    // 3. Trả về payload trung gian sạch sẽ
-    return {
-      extractedData: {
-        documentId,
-        summaryFields,
-        lineItems
-      }
-    };
-
-  } catch (error) {
-    console.error("Error in Textract Lambda:", error);
-    throw error;
-  }
-};
-```
+{{< source-code file="services/functions/textract/index.mjs" language="javascript" >}}
 
 4. **Kiểm thử hàm Lambda**:
    * Sau khi deploy thì chuyển sang tab **Test**.
@@ -212,7 +74,7 @@ export const handler = async (event) => {
    * Ở chỗ **Event JSON** sao chép đoạn code phía dưới. Lưu ý trong S3 phải có đúng định dạng file `raw/user-001/doc-20260628-001/original.pdf`.
      ```json
      {
-       "rawS3Bucket": "docuflow-dev-raw-603199863187-ap-southeast-1",
+       "rawS3Bucket": "docuflow-dev-raw-<AWS_ACCOUNT_ID>-ap-southeast-1",
        "rawS3Key": "raw/user-001/doc-20260628-001/original.pdf"
      }
      ```

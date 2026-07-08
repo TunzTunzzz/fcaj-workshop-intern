@@ -17,15 +17,15 @@ chapter: false
 
 &emsp; **Email:** nhuutinh2004@gmail.com
 
-&emsp; **University:** HUTECH University
+&emsp; **University:** Ho Chi Minh City University of Technology - HUTECH
 
 &emsp; **Major:** Information Technology
 
-&emsp; **Class:** 22DTHE4
+&emsp; **Class:** AWS042026
 
 &emsp; **Internship Company:** Amazon Web Services Vietnam Co., Ltd.
 
-&emsp; **Internship Position:** FCJ Cloud Intern
+&emsp; **Internship Position:** Workforce Bootcamp - First Cloud AI Journey
 
 &emsp; **Internship Duration:** From 17/04/2026 to 10/07/2026
 

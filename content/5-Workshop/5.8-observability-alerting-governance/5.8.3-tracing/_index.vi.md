@@ -1,13 +1,10 @@
 ---
-title: "5.8.3 Tracing AWS X-Ray"
+title: "Tracing AWS X-Ray"
 date: 2024-01-01
 weight: 3
 chapter: false
 pre: " <b> 5.8.3. </b> "
 ---
-
-# Kích hoạt Distributed Tracing với AWS X-Ray
-
 Để theo dõi chi tiết hiệu năng và vẽ sơ đồ đường đi của request (Service Map) xuyên suốt từ cổng vào API Gateway, đi qua máy trạng thái Step Functions, đến từng hàm Lambda thực thi cụ thể, chúng ta cần bật AWS X-Ray.
 
 ---
@@ -36,7 +33,7 @@ pre: " <b> 5.8.3. </b> "
 ### Bước 2: Kích hoạt X-Ray trên Step Functions (Workflow)
 *Giúp máy trạng thái kế thừa Trace ID từ API Gateway và chuyển tiếp tới các tác vụ Lambda.*
 1. Vào dịch vụ **Step Functions** trên AWS Console.
-2. Bấm chọn State Machine của dự án: `docuflow-dev-invoice-processing-workflow`.
+2. Bấm chọn State Machine của dự án: `docuflow-dev-workflow-processing-state-machine`.
    
    ![image154.png](/images/5-Workshop/5.8-observability-alerting-governance/5.8.3-tracing/image154.png)
 
@@ -56,9 +53,9 @@ pre: " <b> 5.8.3. </b> "
 *Bạn cần bật Active Tracing thủ công cho từng hàm Lambda để X-Ray ghi nhận log chi tiết thời gian chạy mã code:*
 
 #### Danh sách 8 hàm Lambda cần duyệt qua:
-* `docuflow-dev-api-upload-url-lambda`
+* `docuflow-dev-api-generate-upload-url-lambda`
 * `docuflow-dev-ingestion-job-starter-lambda`
-* `docuflow-dev-ingestion-validate-lambda`
+* `docuflow-dev-workflow-validate-lambda`
 * `docuflow-dev-ai-textract-lambda`
 * `docuflow-dev-ai-proxy-lambda`
 * `docuflow-dev-ai-confidence-status-lambda`

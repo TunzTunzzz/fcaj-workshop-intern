@@ -1,13 +1,10 @@
 ---
-title: "5.8.1 CloudWatch Logs & Filters"
+title: "CloudWatch Logs & Filters"
 date: 2024-01-01
 weight: 1
 chapter: false
 pre: " <b> 5.8.1. </b> "
 ---
-
-# Cấu hình CloudWatch Logs và Custom Metrics
-
 **PHẦN 1: THIẾT LẬP THỜI GIAN LƯU TRỮ LOG (RETENTION SETTING)**
 
 - Tạo CloudWatch log groups, metric filters/custom metrics nếu cần.
@@ -31,8 +28,8 @@ Bạn thực hiện các bước sau lần lượt cho cả 6 tên nhóm:
 
 Lặp lại chính xác các bước trên cho 5 cái tên còn lại:
 * `/aws/lambda/docuflow-dev-ingestion-job-starter-lambda`
-* `/aws/lambda/docuflow-dev-api-upload-url-lambda`
-* `/aws/lambda/docuflow-dev-ai-textract-extract-lambda`
+* `/aws/lambda/docuflow-dev-api-generate-upload-url-lambda`
+* `/aws/lambda/docuflow-dev-ai-textract-lambda`
 * `/aws/lambda/docuflow-dev-ai-confidence-status-lambda`
 * `/aws/lambda/docuflow-dev-data-lambda`
 
@@ -88,4 +85,3 @@ Filter này giúp đếm xem có bao nhiêu hóa đơn có điểm tin cậy th�
    ![image121.png](/images/5-Workshop/5.8-observability-alerting-governance/5.8.1-logging/image121.png)
 
    ![image122.png](/images/5-Workshop/5.8-observability-alerting-governance/5.8.1-logging/image122.png)
-

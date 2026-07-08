@@ -1,13 +1,10 @@
 ---
-title: "5.8.4 Governance & Audit Logs"
+title: "Governance & Audit Logs"
 date: 2024-01-01
 weight: 4
 chapter: false
 pre: " <b> 5.8.4. </b> "
 ---
-
-# Configure Audit Logging with AWS CloudTrail
-
 To track administrative API activities, monitor changes to infrastructure configuration, and maintain compliance auditing (Audit Logging), we will establish a trail using AWS CloudTrail.
 
 ---
@@ -47,4 +44,3 @@ Due to strict security standards prohibiting the co-location of system logs with
 ![image109.png](/images/5-Workshop/5.8-observability-alerting-governance/5.8.4-governance/image109.png)
 The system will display the log trail status as **Logging** with a green dot. From this moment on, every activity of the AeroOps team on the AWS account is recorded with undeniable audit evidence!
 ![image110.png](/images/5-Workshop/5.8-observability-alerting-governance/5.8.4-governance/image110.png)
-![image111.png](/images/5-Workshop/5.8-observability-alerting-governance/5.8.4-governance/image111.png)

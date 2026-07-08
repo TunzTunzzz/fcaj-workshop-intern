@@ -36,7 +36,3 @@ Qua thời gian thực tập, tôi nhận thấy bản thân đã trưởng thà
 * Tích cực chủ động hơn trong việc tìm tòi học hỏi công nghệ mới và tự giác nhận nhiệm vụ mà không cần nhiều sự chỉ dẫn.
 * Rèn luyện kỹ năng phân tích và tư duy giải quyết vấn đề độc lập trước khi tìm kiếm sự hỗ trợ.
 * Nâng cao hiệu quả giao tiếp trong công việc, học cách trình bày ý tưởng rõ ràng và cải thiện khả năng phối hợp nhóm.
-
-### Kết luận
-
-Kỳ thực tập tại **Amazon Web Services Vietnam** trong vai trò thành viên chương trình **Workforce Bootcamp - First Cloud AI Journey** thực sự là một trải nghiệm quý báu. Môi trường làm việc thực chiến này đã giúp tôi tiếp cận các bài toán thực tế, tích lũy thêm nhiều kiến thức chuyên môn về phát triển giao diện người dùng (Frontend) và tích hợp hệ thống xác thực (Cognito Auth), rèn luyện kỹ năng giải quyết vấn đề cũng như quy trình làm việc nhóm chuyên nghiệp. Thông qua quá trình tự đánh giá, tôi nhận thức rõ những điểm mạnh về kỷ luật và tác phong công nghiệp cần tiếp tục phát huy, đồng thời định hình rõ những hạn chế về sự chủ động và khả năng giao tiếp cần nỗ lực cải thiện trong thời gian tới. Đây sẽ là bệ phóng quan trọng giúp tôi hoàn thiện bản thân, củng cố tư duy kỹ thuật và chuẩn bị hành trang vững vàng nhất cho sự nghiệp kỹ sư đám mây sau khi tốt nghiệp.

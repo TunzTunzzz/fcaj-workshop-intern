@@ -5,9 +5,6 @@ weight: 8
 chapter: false
 pre: " <b> 5.8. </b> "
 ---
-
-# Observability, Alerting and Governance
-
 ### 1. Goal
 Establish comprehensive system observability, configure structured logs and automated alerts for system failures, enable distributed request tracing, log administrative actions (Auditing), and manage your AWS cost footprint to optimize credits.
 

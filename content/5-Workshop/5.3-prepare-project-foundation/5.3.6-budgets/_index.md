@@ -1,13 +1,10 @@
 ---
-title: "5.3.6 Configure Budget Alerts"
+title: "Configure Budget Alerts"
 date: 2024-01-01
 weight: 6
 chapter: false
 pre: " <b> 5.3.6. </b> "
 ---
-
-# Configure Cost Alarms (AWS Budgets)
-
 To manage the project budget and protect your account from unexpected bills, we will configure three distinct types of monthly cost budgets that trigger email alerts.
 
 ---

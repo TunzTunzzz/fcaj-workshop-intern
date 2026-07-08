@@ -1,13 +1,10 @@
 ---
-title: "5.8.1 CloudWatch Logs & Filters"
+title: "CloudWatch Logs & Filters"
 date: 2024-01-01
 weight: 1
 chapter: false
 pre: " <b> 5.8.1. </b> "
 ---
-
-# Configure CloudWatch Logs and Custom Metrics
-
 **PART 1: SET UP LOG RETENTION SETTING**
 
 - Create CloudWatch log groups, metric filters/custom metrics if needed.
@@ -31,8 +28,8 @@ Execute the following steps sequentially for all 6 group names:
 
 Repeat the exact steps above for the remaining 5 names:
 * `/aws/lambda/docuflow-dev-ingestion-job-starter-lambda`
-* `/aws/lambda/docuflow-dev-api-upload-url-lambda`
-* `/aws/lambda/docuflow-dev-ai-textract-extract-lambda`
+* `/aws/lambda/docuflow-dev-api-generate-upload-url-lambda`
+* `/aws/lambda/docuflow-dev-ai-textract-lambda`
 * `/aws/lambda/docuflow-dev-ai-confidence-status-lambda`
 * `/aws/lambda/docuflow-dev-data-lambda`
 

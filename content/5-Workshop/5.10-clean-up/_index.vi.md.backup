@@ -1,0 +1,157 @@
+﻿---
+title: "Dá»n dáº¹p tĂ i nguyĂªn"
+date: 2024-01-01
+weight: 10
+chapter: false
+pre: " <b> 5.10. </b> "
+---
+
+### 1. Má»¥c tiĂªu (Goal)
+Thá»±c hiá»‡n dá»n dáº¹p vĂ  xĂ³a bá» toĂ n bá»™ cĂ¡c tĂ i nguyĂªn AWS Ä‘Ă£ táº¡o sau khi káº¿t thĂºc buá»•i workshop, nháº±m trĂ¡nh phĂ¡t sinh chi phĂ­ phĂ¡t sinh ngoĂ i Ă½ muá»‘n vĂ  chá»©ng minh kiá»ƒm soĂ¡t ngĂ¢n sĂ¡ch dá»± Ă¡n.
+
+### 2. CĂ¡c bÆ°á»›c thá»±c hiá»‡n (Steps)
+
+#### BÆ°á»›c 1: Dá»n rĂ¡c trong cĂ¡c S3 Buckets vĂ  tiáº¿n hĂ nh xĂ³a bucket
+AWS quy Ä‘á»‹nh khĂ´ng cho phĂ©p xĂ³a S3 bucket náº¿u bĂªn trong váº«n cĂ²n chá»©a tá»‡p tin. Do Ä‘Ă³, chĂºng ta cáº§n lĂ m rá»—ng (Empty) trÆ°á»›c khi xĂ³a:
+1. VĂ o dá»‹ch vá»¥ **S3**. Láº§n lÆ°á»£t thá»±c hiá»‡n cho 3 buckets:
+   * `docuflow-dev-raw-<MĂƒ_ACCOUNT>-ap-southeast-1`
+   * `docuflow-dev-processed-<MĂƒ_ACCOUNT>-ap-southeast-1`
+   * `docuflow-dev-cloudtrail-logs-<mĂ£-ngáº«u-nhiĂªn>`
+2. Vá»›i tá»«ng bucket, tĂ­ch chá»n vĂ o tĂªn cá»§a nĂ³ -> Chá»n **Empty** -> GĂµ cá»¥m tá»« `permanently delete` Ä‘á»ƒ xĂ¡c nháº­n xĂ³a toĂ n bá»™ tá»‡p tin bĂªn trong.
+
+   ![Empty S3 Bucket](/images/5-Workshop/5.10-clean-up/empty-s3-bucket.png)
+
+3. Sau khi bucket Ä‘Ă£ trá»‘ng, chá»n láº¡i bucket -> Chá»n **Delete** -> Nháº­p tĂªn cá»§a bucket Ä‘á»ƒ xĂ³a hoĂ n toĂ n bucket khá»i há»‡ thá»‘ng.
+
+   ![Delete S3 Bucket](/images/5-Workshop/5.10-clean-up/delete-s3-bucket.png)
+
+#### BÆ°á»›c 2: XĂ³a báº£ng cÆ¡ sá»Ÿ dá»¯ liá»‡u DynamoDB
+1. Truy cáº­p **DynamoDB** -> Chá»n má»¥c **Tables**.
+
+   ![DynamoDB Tables](/images/5-Workshop/5.10-clean-up/dynamodb-tables.png)
+
+2. TĂ­ch chá»n báº£ng dá»¯ liá»‡u chĂ­nh cá»§a dá»± Ă¡n: `docuflow-dev-documents-table`.
+
+   ![DynamoDB Select Table](/images/5-Workshop/5.10-clean-up/dynamodb-select-table.png)
+
+3. Nháº¥n nĂºt **Delete** á»Ÿ gĂ³c trĂªn cĂ¹ng -> GĂµ chá»¯ `confirm` vĂ o Ă´ xĂ¡c nháº­n vĂ  nháº¥n **Delete** Ä‘á»ƒ xĂ³a báº£ng.
+
+   ![DynamoDB Confirm Delete](/images/5-Workshop/5.10-clean-up/dynamodb-confirm-delete.png)
+
+#### BÆ°á»›c 3: XĂ³a cĂ¡c hĂ m xá»­ lĂ½ Backend Lambda
+1. Truy cáº­p vĂ o Lambda, chá»n táº¥t cáº£ cĂ¡c function vá»«a táº¡o.
+
+   ![Select Lambda Functions](/images/5-Workshop/5.10-clean-up/select-lambda-functions.png)
+
+2. á» chá»— Actions, báº¥m xá»• xuá»‘ng Ä‘á»ƒ chá»n Delete.
+
+   ![Delete Lambda Functions](/images/5-Workshop/5.10-clean-up/delete-lambda-functions.png)
+
+3. Sau khi báº¥m Delete sáº½ hiá»‡n lĂªn má»™t mĂ n hĂ¬nh lĂ  Delete functions, nháº¥n confirm Ä‘á»ƒ xĂ³a cĂ¡c functions vá»«a táº¡o.
+
+   ![Confirm Lambda Delete](/images/5-Workshop/5.10-clean-up/confirm-lambda-delete.png)
+
+#### BÆ°á»›c 4: XĂ³a API Gateway káº¿t ná»‘i
+1. Truy cáº­p **API Gateway**.
+
+   ![API Gateway Console](/images/5-Workshop/5.10-clean-up/api-gateway-console.png)
+
+2. Chá»n API cá»§a dá»± Ă¡n: `docuflow-dev-api`.
+
+   ![Select API Gateway](/images/5-Workshop/5.10-clean-up/select-api-gateway.png)
+
+3. Nháº¥n vĂ o nĂºt **Delete** -> xĂ¡c nháº­n Ä‘á»“ng Ă½ xĂ³a.
+
+   ![Delete API Gateway](/images/5-Workshop/5.10-clean-up/delete-api-gateway.png)
+
+#### BÆ°á»›c 5: XĂ³a cĂ¡c Ä‘Æ°á»ng truyá»n cáº£nh bĂ¡o CloudWatch Alarms
+1. Truy cáº­p **CloudWatch** -> á» menu bĂªn trĂ¡i, chá»n **Alarms** -> **All alarms**.
+2. TĂ­ch chá»n 4 bá»™ Alarms Ä‘Ă£ táº¡o:
+   * `docuflow-dev-workflow-failed-alarm`
+   * `docuflow-dev-sqs-dlq-not-empty-alarm`
+   * `docuflow-dev-lambda-ai-proxy-error-alarm`
+   * `docuflow-dev-low-confidence-spike-alarm`
+3. Nháº¥n nĂºt **Actions** -> Chá»n **Delete** -> nháº¥n **Delete** Ä‘á»ƒ xĂ¡c nháº­n.
+
+![image162.png](/images/5-Workshop/5.10-clean-up/image162.png)
+
+#### BÆ°á»›c 6: XĂ³a CloudWatch Log Groups phĂ¡t sinh
+1. Váº«n á»Ÿ CloudWatch, chá»n **Logs** -> **Log groups**.
+2. TĂ­ch chá»n láº§n lÆ°á»£t 6 nhĂ³m Log Groups cá»§a cĂ¡c hĂ m Lambda Ä‘Ă£ cáº¥u hĂ¬nh:
+   * `/aws/lambda/docuflow-dev-api-generate-upload-url-lambda`
+   * `/aws/lambda/docuflow-dev-ingestion-job-starter-lambda`
+   * `/aws/lambda/docuflow-dev-workflow-validate-lambda`
+   * `/aws/lambda/docuflow-dev-ai-textract-lambda`
+   * `/aws/lambda/docuflow-dev-ai-proxy-lambda`
+   * `/aws/lambda/docuflow-dev-ai-confidence-status-lambda`
+3. Nháº¥n nĂºt **Actions** -> Chá»n **Delete log group(s)** -> xĂ¡c nháº­n xĂ³a.
+
+![image163.png](/images/5-Workshop/5.10-clean-up/image163.png)
+
+#### BÆ°á»›c 7: XĂ³a cĂ¡c kĂªnh thĂ´ng bĂ¡o SNS Topic & SES Email Identity
+1. **SNS Topic**: Truy cáº­p **Simple Notification Service (SNS)** -> chá»n **Topics** -> TĂ­ch chá»n topic `docuflow-dev-notification-system-alerts-topic` -> Nháº¥n **Delete** -> GĂµ `delete me` Ä‘á»ƒ xĂ³a.
+
+![image164.png](/images/5-Workshop/5.10-clean-up/image164.png)
+
+2. **SES Email Identity**: Truy cáº­p **Simple Email Service (SES)** -> chá»n **Verified identities** -> TĂ­ch chá»n Ä‘á»‹a chá»‰ email nháº­n tin cá»§a báº¡n -> Nháº¥n **Delete** -> xĂ¡c nháº­n xĂ³a.
+
+#### BÆ°á»›c 8: XĂ³a luá»“ng giĂ¡m sĂ¡t lá»‹ch sá»­ CloudTrail
+1. Truy cáº­p **CloudTrail** -> Chá»n má»¥c **Trails** á»Ÿ menu bĂªn trĂ¡i.
+2. Báº¥m vĂ o Trail cá»§a nhĂ³m: `docuflow-dev-audit-trail`.
+3. Nháº¥n nĂºt **Stop logging** (Dá»«ng ghi log) -> sau Ä‘Ă³ báº¥m **Delete** Ä‘á»ƒ xĂ³a trail.
+
+![image165.png](/images/5-Workshop/5.10-clean-up/image165.png)
+
+#### BÆ°á»›c 9: XĂ³a há»‡ thá»‘ng kiá»ƒm soĂ¡t ngĂ¢n sĂ¡ch AWS Budgets
+1. GĂµ **Budgets** trĂªn thanh Search -> Chá»n **AWS Budgets**.
+2. TĂ­ch chá»n 3 bá»™ ngĂ¢n sĂ¡ch Ä‘Ă£ táº¡o:
+   * `DocuFlow-Monthly-Actual-Cost`
+   * `DocuFlow-Credit-Safety`
+   * `DocuFlow-FreeTier-Watch`
+3. Nháº¥n nĂºt **Actions** -> Chá»n **Delete** -> xĂ¡c nháº­n xĂ³a bá».
+
+![image166.png](/images/5-Workshop/5.10-clean-up/image166.png)
+
+#### BÆ°á»›c 10: XĂ³a chĂ¬a khĂ³a API ngoĂ i trong Secrets Manager
+1. Truy cáº­p **Secrets Manager** -> chá»n secret `docuflow-dev-external-ai-api-key`.
+2. Nháº¥n nĂºt **Actions** -> Chá»n **Delete secret**.
+3. Táº¡i Ă´ chá»n sá»‘ ngĂ y chá» xĂ³a, chá»n sá»‘ ngĂ y tá»‘i thiá»ƒu lĂ  **7 ngĂ y** Ä‘á»ƒ há»‡ thá»‘ng khĂ³a bĂ­ máº­t láº¡i ngay láº­p tá»©c vĂ  khĂ´ng tĂ­nh phĂ­ duy trĂ¬.
+
+![image167.png](/images/5-Workshop/5.10-clean-up/image167.png)
+
+#### BÆ°á»›c 11: XĂ³a cĂ¡c IAM Roles & Policies Ä‘Ă£ táº¡o
+1. Truy cáº­p **IAM** -> Chá»n má»¥c **Roles**.
+2. TĂ¬m kiáº¿m vĂ  chá»n láº§n lÆ°á»£t 9 bá»™ Roles Ä‘Ă£ táº¡o thá»§ cĂ´ng á»Ÿ bÆ°á»›c 3:
+   * `docuflow-dev-security-upload-url-role`
+   * `docuflow-dev-security-job-starter-role`
+   * `docuflow-dev-workflow-stepfunctions-role`
+   * `docuflow-dev-ai-textract-lambda-role`
+   * `docuflow-dev-security-ai-proxy-role`
+   * `docuflow-dev-data-lambda-role`
+   * `docuflow-dev-notification-lambda-role`
+   * `docuflow-dev-workflow-validate-lambda-role`
+   * `docuflow-dev-ai-confidence-status-lambda-role`
+3. Nháº¥n **Delete** vĂ  gĂµ tĂªn Role Ä‘á»ƒ xĂ¡c nháº­n gá»¡ bá».
+
+![image168.png](/images/5-Workshop/5.10-clean-up/image168.png)
+
+4. Chuyá»ƒn sang má»¥c **Policies** -> TĂ¬m kiáº¿m vĂ  xĂ³a táº¥t cáº£ cĂ¡c policy tĂ¹y chá»‰nh do báº¡n tá»± viáº¿t (nhÆ° `docuflow-dev-ingestion-s3-raw-access-policy`, `docuflow-dev-ai-secret-read-policy`, v.v.).
+
+#### BÆ°á»›c 12: LĂªn lá»‹ch xĂ³a khĂ³a mĂ£ hĂ³a gá»‘c KMS Key (Báº¯t buá»™c lĂ m cuá»‘i cĂ¹ng)
+1. Truy cáº­p **Key Management Service (KMS)** -> chá»n **Customer managed keys**.
+2. TĂ­ch chá»n khĂ³a CMK: `docuflow-dev-main-key`.
+3. Nháº¥n nĂºt **Key actions** -> Chá»n **Schedule key deletion**.
+4. Táº¡i Ă´ **Waiting period (in days)**, gĂµ sá»‘ ngĂ y chá» tá»‘i thiá»ƒu lĂ  **7** (AWS báº¯t buá»™c thá»i gian chá» tá»« 7-30 ngĂ y Ä‘á»ƒ trĂ¡nh xĂ³a nháº§m).
+5. Báº¥m nĂºt xĂ¡c nháº­n mĂ u cam Ä‘á»ƒ hoĂ n táº¥t. KhĂ³a sáº½ chuyá»ƒn sang tráº¡ng thĂ¡i `Pending deletion` vĂ  dá»«ng tĂ­nh phĂ­ duy trĂ¬.
+
+![image169.png](/images/5-Workshop/5.10-clean-up/image169.png)
+
+### 3. Káº¿t quáº£ mong Ä‘á»£i (Expected Result)
+* Táº¥t cáº£ tĂ i nguyĂªn chá»‹u phĂ­ cá»§a AWS Ä‘Æ°á»£c xĂ³a sáº¡ch sáº½.
+* HoĂ n thĂ nh xĂ¡c thá»±c khĂ´ng cĂ²n chi phĂ­ phĂ¡t sinh báº¥t ngá».
+
+### 4. Minh chá»©ng thá»±c hĂ nh (Evidence)
+
+- XĂ¡c nháº­n cĂ¡c bucket cá»§a workshop khĂ´ng cĂ²n xuáº¥t hiá»‡n trong S3 Console.
+- XĂ¡c nháº­n toĂ n bá»™ tĂ i nguyĂªn dá»± Ă¡n liá»‡t kĂª phĂ­a trĂªn Ä‘Ă£ Ä‘Æ°á»£c xĂ³a.
+- Kiá»ƒm tra AWS Billing vĂ  Cost Explorer sau khi dá»n dáº¹p Ä‘á»ƒ phĂ¡t hiá»‡n tĂ i nguyĂªn cĂ²n phĂ¡t sinh chi phĂ­.

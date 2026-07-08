@@ -36,7 +36,3 @@ To objectively reflect on my internship period, I evaluate myself based on the f
 * Be more proactive in learning new technologies and taking the initiative without waiting for step-by-step instructions.
 * Develop analytical and independent problem-solving skills before seeking external guidance.
 * Enhance communication efficiency, learn to present ideas clearly, and improve teamwork capabilities.
-
-### Conclusion
-
-The internship at **Amazon Web Services Vietnam** as a participant in the **Workforce Bootcamp - First Cloud AI Journey** program has been a truly invaluable experience. This hands-on environment allowed me to tackle real-world problems, accumulate specialized knowledge in user interface development (Frontend) and authentication integration (Cognito Auth), and practice problem-solving alongside professional teamwork processes. Through this self-assessment, I have clearly recognized my strengths in discipline and professional conduct to continue building upon, while identifying key areas for growth in proactiveness and communication that I will actively improve in the coming time. This will serve as a crucial foundation for me to develop myself, reinforce my technical mindset, and thoroughly prepare for my future career as a cloud engineer after graduation.

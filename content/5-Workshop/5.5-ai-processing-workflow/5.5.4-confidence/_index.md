@@ -1,13 +1,10 @@
 ---
-title: "5.5.4 Confidence Status Lambda"
+title: "Confidence Status Lambda"
 date: 2024-01-01
 weight: 4
 chapter: false
 pre: " <b> 5.5.4. </b> "
 ---
-
-# Confidence & Status Lambda Function (`docuflow-dev-ai-confidence-status-lambda`)
-
 This function is responsible for checking data integrity (Schema completeness), evaluating the extraction confidence (Confidence Score), and determining the final status of the document (`EXTRACTED` or `REVIEW_REQUIRED`).
 
 ---
@@ -50,102 +47,13 @@ This function is responsible for checking data integrity (Schema completeness), 
    ![image35.png](/images/5-Workshop/5.5-ai-processing-workflow/5.5.4-confidence/image35.png)
    * Change **Timeout** to **30 seconds** and click **Save**.
    ![image36.png](/images/5-Workshop/5.5-ai-processing-workflow/5.5.4-confidence/image36.png)
+   * Under **Environment variables**, add `CONFIDENCE_THRESHOLD` = `0.9`.
 
 3. **Deploy Code**:
    * In the **Code** tab, paste the following Node.js code over the boilerplate code in the `index.mjs` editor.
    * Click **Deploy**.
 
-```javascript
-export const handler = async (event) => {
-  console.log("Received event:", JSON.stringify(event, null, 2));
-
-  // ==========================================
-  // 1. TÌM ĐÚNG VỊ TRÍ DỮ LIỆU (Bao phủ mọi kịch bản của Step Functions)
-  // ==========================================
-  // Sử dụng Toán tử Nullish Coalescing (??) để fallback an toàn
-  const invoice = 
-    event.invoice ?? 
-    event.normalizedResult?.invoice ?? 
-    event.normalizedResult?.Payload?.invoice ?? 
-    event.normalizedResult?.payload?.invoice ?? 
-    {};
-
-  const confidence = 
-    event.confidence ?? 
-    event.normalizedResult?.confidence ?? 
-    event.normalizedResult?.Payload?.confidence ?? 
-    event.normalizedResult?.payload?.confidence ?? 
-    {};
-  
-  // Khởi tạo danh sách mã lý do cần kiểm duyệt
-  const reviewReasonCodes = [];
-
-  // ==========================================
-  // 2. KIỂM TRA LỖI VÀ TÍNH ĐẦY ĐỦ
-  // ==========================================
-  if (!invoice.vendorName) reviewReasonCodes.push('MISSING_VENDOR_NAME');
-  if (!invoice.invoiceDate) reviewReasonCodes.push('MISSING_INVOICE_DATE');
-  
-  // Sử dụng == null để bắt đồng thời cả null và undefined
-  if (invoice.totalAmount == null) {
-    reviewReasonCodes.push('MISSING_TOTAL_AMOUNT');
-  } else if (typeof invoice.totalAmount !== 'number') {
-    reviewReasonCodes.push('INVALID_AMOUNT_FORMAT');
-  }
-  
-  if (!invoice.currency) reviewReasonCodes.push('MISSING_CURRENCY');
-
-  // ==========================================
-  // 3. TÍNH TOÁN VÀ CHUẨN HÓA CONFIDENCE SCORE
-  // ==========================================
-  let rawScore = confidence.confidenceScore;
-
-  if (typeof rawScore !== 'number') {
-    const fieldScores = Object.values(confidence.fieldConfidence || {});
-    // Rút gọn khối if-else bằng toán tử ba ngôi (Ternary operator)
-    rawScore = fieldScores.length > 0 
-      ? fieldScores.reduce((a, b) => a + b, 0) / fieldScores.length 
-      : 0;
-  }
-
-  // Đảm bảo giá trị nằm trong khoảng từ 0 đến 1
-  let finalConfidenceScore = rawScore > 1 ? rawScore / 100 : rawScore;
-  finalConfidenceScore = Math.max(0, Math.min(1, finalConfidenceScore));
-
-  // Gán LOW_CONFIDENCE nếu điểm dưới 0.9 hoặc cờ hasLowConfidence đã bật
-  if (finalConfidenceScore < 0.9 || confidence.hasLowConfidence) {
-    if (!reviewReasonCodes.includes('LOW_CONFIDENCE')) {
-      reviewReasonCodes.push('LOW_CONFIDENCE');
-    }
-  }
-
-  // ==========================================
-  // 4. QUYẾT ĐỊNH STATUS CUỐI CÙNG
-  // ==========================================
-  const isReviewRequired = reviewReasonCodes.length > 0;
-  const status = isReviewRequired ? 'REVIEW_REQUIRED' : 'EXTRACTED';
-
-  // ==========================================
-  // 5. TRẢ VỀ KẾT QUẢ ĐÃ LẮP GHÉP
-  // ==========================================
-  return {
-    ...event, // BẢO TOÀN TOÀN BỘ CÁC TRƯỜNG GỐC TỪ BƯỚC TRƯỚC
-    status,   // Shorthand property (thay vì status: status)
-    confidence: {
-      confidenceScore: parseFloat(finalConfidenceScore.toFixed(4)),
-      hasLowConfidence: reviewReasonCodes.includes('LOW_CONFIDENCE'),
-      fieldConfidence: confidence.fieldConfidence || {}
-    },
-    review: {
-      reviewStatus: isReviewRequired ? 'PENDING' : 'NOT_REQUIRED', 
-      reviewReasonCodes, // Shorthand property
-      reviewedBy: null,
-      reviewedAt: null,
-      corrections: []
-    }
-  };
-};
-```
+{{< source-code file="services/functions/confidence-status/index.mjs" language="javascript" >}}
 
 4. **Test the Lambda function**:
    * Switch to the **Test** tab.

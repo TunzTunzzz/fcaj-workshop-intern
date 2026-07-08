@@ -1,13 +1,10 @@
 ---
-title: "5.7.2 Các hàm Lambda quản lý dữ liệu"
+title: "Các hàm Lambda quản lý dữ liệu"
 date: 2024-01-01
 weight: 2
 chapter: false
 pre: " <b> 5.7.2. </b> "
 ---
-
-# TẠO CÁC HÀM XỬ LÝ (AWS LAMBDA)
-
 AWS Lambda là gì? Lambda là dịch vụ giúp bạn chạy code (mã lập trình) mà không cần phải đi thuê nguyên một máy chủ (server) rườm rà. Hệ thống module dữ liệu của chúng ta cần 4 hàm Lambda nhỏ để nhận lệnh từ người dùng và đi đọc/ghi dữ liệu vào S3 và DynamoDB.
 
 ---
@@ -52,6 +49,12 @@ Khi hàm được tạo xong, bạn sẽ thấy giao diện quản lý. Tại m�
 
 ---
 
+**Mã nguồn (`index.mjs`)**:
+
+{{< source-code file="services/functions/get-document/index.mjs" language="javascript" >}}
+
+---
+
 ### BƯỚC 3.2: TẠO HÀM LIST DOCUMENTS LAMBDA
 
 Hàm này giúp lấy danh sách toàn bộ chứng từ của người dùng hoặc lọc những chứng từ bị lỗi (API `GET /documents`).
@@ -86,6 +89,12 @@ Khi hàm được tạo xong, tại mục Code source, bạn có thể dán code
 
 ---
 
+**Mã nguồn (`index.mjs`)**:
+
+{{< source-code file="services/functions/list-documents/index.mjs" language="javascript" >}}
+
+---
+
 ### BƯỚC 3.3: TẠO HÀM REVIEW UPDATE LAMBDA
 
 Hàm này dùng để lưu lại các thông tin mà người dùng sửa tay trên giao diện (ví dụ: AI nhận diện sai số tiền và người dùng sửa lại).
@@ -114,7 +123,17 @@ Hàm này dùng để lưu lại các thông tin mà người dùng sửa tay tr
 ![image48.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.2-lambdas/image48.png)
 ---
 
-### BƯỚC 3.4 Tạo Hàm Delete Document
+**Mã nguồn (`index.mjs`)**:
+
+{{< source-code file="services/functions/review-update/index.mjs" language="javascript" >}}
+
+---
+
+## Lambda mở rộng (Phần làm thêm của dự án)
+
+Ba hàm dưới đây **không nằm trong danh sách Lambda MVP đã được duyệt**. Đây là các phần làm thêm cho chức năng xóa tài liệu, dữ liệu Dashboard và điều khiển process/retry chủ động. Chỉ triển khai khi sử dụng các route API và giao diện mở rộng tương ứng.
+
+### LAMBDA MỞ RỘNG E1: Tạo hàm Delete Document
 
 Hàm này dùng để xóa dữ liệu 1 hoặc nhiều document của user mà user muốn xóa.
 
@@ -144,11 +163,37 @@ Hàm này dùng để xóa dữ liệu 1 hoặc nhiều document của user mà 
 
 ---
 
-### BƯỚC 3.5: CẤU HÌNH BIẾN MÔI TRƯỜNG & TIMEOUT
+**Mã nguồn (`index.mjs`)**:
+
+{{< source-code file="services/functions/delete-document/index.mjs" language="javascript" >}}
+
+---
+
+### LAMBDA MỞ RỘNG E2: TẠO DASHBOARD LAMBDA
+
+Hàm `dashboard` tổng hợp KPI, hoạt động gần đây, cảnh báo và phân bố trạng thái để phục vụ Dashboard. Tạo Lambda `docuflow-dev-data-dashboard-lambda` bằng cùng runtime, kiến trúc và execution role của nhóm Data Lambda.
+
+**Mã nguồn (`index.mjs`)**:
+
+{{< source-code file="services/functions/dashboard/index.mjs" language="javascript" >}}
+
+---
+
+### LAMBDA MỞ RỘNG E3: TẠO PROCESS CONTROL LAMBDA
+
+Hàm `process-control` xác thực quyền sở hữu tài liệu, kiểm tra object trong S3 Raw và khởi chạy lại Step Functions khi người dùng yêu cầu retry hoặc process. Tạo Lambda `docuflow-dev-data-process-control-lambda` bằng cùng runtime và kiến trúc của nhóm Data Lambda; execution role cần quyền đọc S3 Raw, đọc/ghi DynamoDB và `states:StartExecution`.
+
+**Mã nguồn (`index.mjs`)**:
+
+{{< source-code file="services/functions/process-control/index.mjs" language="javascript" >}}
+
+---
+
+### CẤU HÌNH CHUNG: BIẾN MÔI TRƯỜNG & TIMEOUT
 
 Code của chúng ta cần biết tên bảng và tên Bucket là gì để kết nối. Ngoài ra, việc đọc file đôi khi tốn thời gian, ta cần tăng thời gian chờ mặc định lên để hàm không bị ngắt ngang.
 
-Thực hiện lần lượt các bước sau cho **cả 4 hàm Lambda** bạn vừa tạo:
+Thực hiện các bước sau cho **ba Data Lambda cốt lõi và các Lambda mở rộng mà bạn chọn triển khai**:
 
 1. Tại giao diện chi tiết của từng hàm Lambda đã tạo, chuyển sang tab **Configuration**.
  ![image56.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.2-lambdas/image56.png)
@@ -170,15 +215,14 @@ Nhấn **Save**.
    * **Cặp biến thứ ba**:
      * **Key**: `DOCUFLOW_DEV_RAW_BUCKET`
      * **Value**: Nhập đúng tên bucket S3 Raw (ví dụ: `docuflow-dev-raw-<MÃ_ACCOUNT_AWS>-ap-southeast-1`)
+   * Riêng **Process Control**, thêm `DOCUFLOW_DEV_STATE_MACHINE_ARN` với ARN của processing State Machine đã triển khai.
+   * Riêng **Dashboard**, có thể thêm `DOCUFLOW_DEV_VND_EXCHANGE_RATES` dưới dạng JSON khi cần quy đổi tổng báo cáo sang VND.
 
 ![image61.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.2-lambdas/image61.png)
 
 5. Nhấn **Save** để áp dụng.
 ![image62.png](/images/5-Workshop/5.7-store-result-review-flow/5.7.2-lambdas/image62.png)
 
-Sau khi hoàn tất bước này cho cả 4 hàm, khung sườn của bạn đã sẵn sàng nhận mã nguồn xử lý logic và có thể cấu hình tích hợp thẳng vào API Gateway của hệ thống.
+Sau khi cấu hình xong các hàm đã chọn, các Lambda đã sẵn sàng tích hợp với API Gateway và Step Functions của hệ thống.
 
 ---
-
-
-

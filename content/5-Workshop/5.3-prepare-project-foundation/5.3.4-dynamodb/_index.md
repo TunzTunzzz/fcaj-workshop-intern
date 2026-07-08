@@ -1,13 +1,10 @@
 ---
-title: "5.3.4 Configure DynamoDB Table"
+title: "Configure DynamoDB Table"
 date: 2024-01-01
 weight: 4
 chapter: false
 pre: " <b> 5.3.4. </b> "
 ---
-
-# CREATE A DATABASE WITH AMAZON DYNAMODB
-
 What is Amazon DynamoDB? Unlike the S3 hard drive used to store files, DynamoDB is a blazing fast Database used to store table-like data. This table will store concise metadata such as: document ID, processing history, amounts, and statuses so the Frontend application can search and display it quickly.
 
 1. Access the DynamoDB service:

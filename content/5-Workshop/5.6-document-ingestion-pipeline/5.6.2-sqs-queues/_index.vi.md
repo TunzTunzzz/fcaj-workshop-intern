@@ -1,13 +1,10 @@
 ---
-title: "5.6.2 Tạo SQS DLQ và Queue chính"
+title: "Tạo SQS DLQ và Queue chính"
 date: 2024-01-01
 weight: 2
 chapter: false
 pre: " <b> 5.6.2. </b> "
 ---
-
-# Tạo SQS DLQ và Queue chính
-
 #### Tạo SQS DLQ và Queue chính
 ![image15.png](/images/5-Workshop/5.6-document-ingestion-pipeline/image15.png)
 Vào thanh search AWS, gõ: **SQS** → Chọn **Simple Queue Service** → **Queues** → **Create queue**.

@@ -6,7 +6,6 @@ chapter: false
 pre: " <b> 5.3. </b> "
 ---
 
-# Xây dựng nền tảng dự án
 
 ### Mục tiêu (Goal)
 Khởi tạo và cấu hình toàn bộ các tài nguyên lưu trữ nền tảng (S3), cơ sở dữ liệu (DynamoDB), quản lý khóa bảo mật (KMS & Secrets Manager), phân quyền IAM chi tiết và thiết lập các cảnh báo chi phí trước khi xây dựng luồng xử lý chính.

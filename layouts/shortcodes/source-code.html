@@ -1,0 +1,12 @@
+{{ $file := .Get "file" }}
+{{ $lang := .Get "language" | default "text" }}
+{{ $code := "" }}
+{{ $path := printf "%s" $file }}
+{{ if fileExists $path }}
+  {{ $code = readFile $path }}
+  {{ printf "```%s\n%s\n```" $lang $code | markdownify }}
+{{ else }}
+  <div class="notices warning">
+    <p><strong>Warning:</strong> Code file not found: <code>{{ $path }}</code></p>
+  </div>
+{{ end }}

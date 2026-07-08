@@ -5,13 +5,12 @@ weight: 4
 chapter: false
 pre: " <b> 5.4. </b> "
 ---
-
-# Setup and Run Frontend
-
 ### 1. Goal
 Download the Frontend source code (React/Vite), configure the environment variables to connect with AWS resources created in step 3, start the local development server, and verify user signup/login using Amazon Cognito, along with raw document uploads using S3 Presigned URLs.
 
 ### 2. Steps
+
+This section first prepares the frontend for local development. After the backend API is available, continue with **[5.4.1 Deploy Frontend with AWS Amplify Hosting](5.4.1-deploy-amplify/)** to publish the production frontend URL.
 
 #### Step 1: Initialize Amazon Cognito User Pool 
 To secure user access using standard JWT tokens before uploading files:
@@ -100,10 +99,10 @@ To secure user access using standard JWT tokens before uploading files:
    * **Finance User:** `finance@docuflow.ai` / `password` (Uploads and views their own invoices, performs reviews)
    * **Administrator:** `admin@docuflow.ai` / `password` (Inspects all records, accesses Operations)
 
-#### Step 5: Deploy the Presigned URL Lambda Function (`docuflow-dev-api-upload-url-lambda`)
+#### Step 5: Deploy the Presigned URL Lambda Function (`docuflow-dev-api-generate-upload-url-lambda`)
 This Lambda function receives frontend requests, generates S3 Presigned URLs, and initializes metadata inside the DynamoDB documents table.
 1. Go to **Lambda** -> click **Create function** -> **Author from scratch**.
-2. **Function name**: `docuflow-dev-api-upload-url-lambda`.
+2. **Function name**: `docuflow-dev-api-generate-upload-url-lambda`.
 3. **Runtime**: Select `Node.js 18.x` or higher.
 4. **Role**: Select **Use an existing role** -> choose `docuflow-dev-security-upload-url-role`.
 5. Click **Create function**.
@@ -112,68 +111,7 @@ This Lambda function receives frontend requests, generates S3 Presigned URLs, an
    * `DOCUFLOW_DEV_TABLE_NAME` = `docuflow-dev-documents-table`
    * `DOCUFLOW_DEV_RAW_BUCKET` = `docuflow-dev-raw-<AWS_ACCOUNT_ID>-ap-southeast-1`
 8. In the **Code** tab, copy and paste the code below into `index.mjs` and click **Deploy**:
-   ```javascript
-   import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-   import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-   import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
-
-   const s3Client = new S3Client({ region: "ap-southeast-1" });
-   const ddbClient = new DynamoDBClient({ region: "ap-southeast-1" });
-
-   export const handler = async (event) => {
-     console.log("Event:", JSON.stringify(event));
-     try {
-       const userId = event.requestContext?.authorizer?.claims?.sub || "user-001";
-       const documentId = `doc-${Date.now()}`;
-       const rawBucket = process.env.DOCUFLOW_DEV_RAW_BUCKET;
-       const tableName = process.env.DOCUFLOW_DEV_TABLE_NAME;
-       
-       const key = `raw/${userId}/${documentId}/original.pdf`;
-       
-       // 1. Generate S3 presigned URL for direct upload
-       const command = new PutObjectCommand({
-         Bucket: rawBucket,
-         Key: key,
-         ContentType: "application/pdf"
-       });
-       
-       const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 900 });
-       
-       // 2. Initialize metadata in DynamoDB (Offloading design)
-       await ddbClient.send(new PutItemCommand({
-         TableName: tableName,
-         Item: {
-           PK: { S: `USER#${userId}` },
-           SK: { S: `DOC#${documentId}` },
-           documentId: { S: documentId },
-           userId: { S: userId },
-           status: { S: "PROCESSING" },
-           s3RawPath: { S: key },
-           createdAt: { S: new Date().toISOString() },
-           GSI1PK: { S: "STATUS#PROCESSING" },
-           GSI1SK: { S: new Date().toISOString() }
-         }
-       }));
-       
-       return {
-         statusCode: 200,
-         headers: {
-           "Access-Control-Allow-Origin": "*",
-           "Access-Control-Allow-Headers": "Content-Type,Authorization",
-           "Content-Type": "application/json"
-         },
-         body: JSON.stringify({ uploadUrl, documentId, key })
-       };
-     } catch (err) {
-       console.error(err);
-       return {
-         statusCode: 500,
-         headers: { "Access-Control-Allow-Origin": "*" },
-         body: JSON.stringify({ error: err.message })
-       };
-     }
-   };
-   ```
+{{< source-code file="services/functions/generate-upload-url/index.mjs" language="javascript" >}}
 
 #### Step 5: Run the Dev Server & Test Uploads
 1. Start the React/Vite local dev server:
@@ -191,18 +129,10 @@ This Lambda function receives frontend requests, generates S3 Presigned URLs, an
 * Frontend uploads PDF documents directly to the S3 Raw Bucket using Presigned URLs.
 
 ### 4. Evidence
-* **Local React application running:**
-  *(Save the screenshot to `static/images/5-Workshop/5.4-setup-and-run-frontend/frontend-local.png`)*
-  ![Local Frontend](/images/5-Workshop/5.4-setup-and-run-frontend/frontend-local.png)
 
-* **Cognito Login successful:**
-  *(Save the screenshot to `static/images/5-Workshop/5.4-setup-and-run-frontend/login.png`)*
-  ![Login Screen](/images/5-Workshop/5.4-setup-and-run-frontend/login.png)
+Before continuing, verify that:
 
-* **Upload success message on Frontend UI:**
-  *(Save the screenshot to `static/images/5-Workshop/5.4-setup-and-run-frontend/upload-success.png`)*
-  ![Upload Success UI](/images/5-Workshop/5.4-setup-and-run-frontend/upload-success.png)
-
-* **Uploaded document present in S3 Raw bucket:**
-  *(Save the screenshot to `static/images/5-Workshop/5.4-setup-and-run-frontend/s3-raw-object.png`)*
-  ![S3 Raw Object](/images/5-Workshop/5.4-setup-and-run-frontend/s3-raw-object.png)
+- The React application runs locally without console errors.
+- Cognito registration and sign-in succeed.
+- The upload flow reports success.
+- The uploaded object appears at the expected key in the S3 Raw bucket.

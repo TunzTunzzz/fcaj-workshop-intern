@@ -1,13 +1,10 @@
 ---
-title: "5.7.4 Testing and Reporting"
+title: "Testing and Reporting"
 date: 2024-01-01
 weight: 4
 chapter: false
 pre: " <b> 5.7.4. </b> "
 ---
-
-# API Testing & Statistical Reporting
-
 We will set up Mock Data to independently test the data management API cluster, then use AWS CloudShell to run a statistical reporting script for the documents.
 
 ---

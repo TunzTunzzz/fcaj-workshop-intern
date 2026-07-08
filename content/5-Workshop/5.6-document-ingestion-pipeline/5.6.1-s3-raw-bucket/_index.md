@@ -1,13 +1,10 @@
 ---
-title: "5.6.1 Configure EventBridge for S3 Raw Bucket"
+title: "Configure EventBridge for S3 Raw Bucket"
 date: 2024-01-01
 weight: 1
 chapter: false
 pre: " <b> 5.6.1. </b> "
----
-
-# Configure EventBridge for S3 Raw Bucket
-#### Enable EventBridge notification for the Raw bucket
+---#### Enable EventBridge notification for the Raw bucket
 After creating the bucket, return to the Raw bucket:
 ![image9.png](/images/5-Workshop/5.6-document-ingestion-pipeline/image9.png)
 1. Go to the **Properties** tab.

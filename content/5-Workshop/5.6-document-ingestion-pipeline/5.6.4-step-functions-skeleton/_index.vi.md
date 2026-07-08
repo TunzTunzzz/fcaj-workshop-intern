@@ -1,13 +1,10 @@
 ---
-title: "5.6.4 Tạo và Test Step Functions Skeleton"
+title: "Tạo và Test Step Functions Skeleton"
 date: 2024-01-01
 weight: 4
 chapter: false
 pre: " <b> 5.6.4. </b> "
 ---
-
-# Tạo và Test Step Functions Skeleton
-
 #### Tạo Step Functions skeleton
 *Mục đích: Tạo một Workflow khung xương (Mock data) để test khả năng gọi từ Lambda sang Step Functions trước khi tích hợp logic AI thật.*
 1. Mở Step Functions: Gõ **Step Functions** → **State machines** → Bấm **Create state machine**.
