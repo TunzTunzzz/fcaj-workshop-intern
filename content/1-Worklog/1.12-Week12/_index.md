@@ -15,10 +15,7 @@ pre: " <b> 1.12. </b> "
 | Day | Task | Start Date | Completion Date | Reference Material |
 | --- | ---- | ---------- | --------------- | ------------------ |
 | 2   | - Outline and structure the content for the Workshop. | 06/07/2026 | 06/07/2026 | |
-| 3   | - Start drafting the detailed hands-on guide for attendees. | 07/07/2026 | 07/07/2026 | |
-| 4   | - Continue finalizing the Workshop content, preparing images, and system demo configurations. | 08/07/2026 | 08/07/2026 | |
-| 5   | - Review all internship reports (Worklogs, Proposal, Blogs) to detect and correct spelling and grammatical errors. | 09/07/2026 | 09/07/2026 | |
-| 6   | - Finalize the last version of the Workshop documentation and internship report. | 10/07/2026 | 10/07/2026 | |
+| 3   | - Start drafting the detailed guide. | 07/07/2026 | 07/07/2026 | |
 
 ### Week 12 Achievements:
 

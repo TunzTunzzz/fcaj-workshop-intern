@@ -14,11 +14,8 @@ pre: " <b> 1.12. </b> "
 ### Các công việc cần triển khai trong tuần này:
 | Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
 | --- | --------- | ------------ | --------------- | -------------- |
-| 2   | - Lên dàn ý và cấu trúc nội dung cho buổi Workshop. | 06/07/2026 | 06/07/2026 | |
-| 3   | - Bắt đầu soạn thảo tài liệu hướng dẫn chi tiết (hands-on guide) cho người tham dự. | 07/07/2026 | 07/07/2026 | |
-| 4   | - Tiếp tục hoàn thiện nội dung Workshop, chuẩn bị hình ảnh và cấu hình hệ thống demo. | 08/07/2026 | 08/07/2026 | |
-| 5   | - Đọc lại toàn bộ nội dung báo cáo thực tập (Worklog, Proposal, Blogs) để phát hiện và chỉnh sửa lỗi chính tả, câu từ. | 09/07/2026 | 09/07/2026 | |
-| 6   | - Chốt lại phiên bản cuối cùng của tài liệu Workshop và báo cáo thực tập. | 10/07/2026 | 10/07/2026 | |
+| 2   | - Lên dàn ý và cấu trúc nội dung cho Workshop. | 06/07/2026 | 06/07/2026 | |
+| 3   | - Bắt đầu soạn thảo tài liệu hướng dẫn chi tiết. | 07/07/2026 | 07/07/2026 | |
 
 ### Kết quả đạt được tuần 12:
 
