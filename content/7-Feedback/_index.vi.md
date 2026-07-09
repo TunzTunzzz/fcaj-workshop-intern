@@ -45,7 +45,7 @@ Có khuyên. Vì đây là môi trường chuyên nghiệp, được mentor kèm
 Nên tổ chức giao lưu chéo giữa các nhóm dự án và các buổi đánh giá định kỳ (1-on-1) để thực tập sinh nhận phản hồi để tiến bộ.
 
 **2. Bạn có muốn tiếp tục chương trình này trong tương lai?**  
-Có, mong muốn tiếp tục đồng hành để tham gia nhiều dự án thực tế và học hỏi sâu hơn trong môi trường doanh nghiệp.
+Tôi chưa chắc chắn. Điều này còn phụ thuộc vào thời gian và các kế hoạch cá nhân khác của tôi trong tương lai.
 
 **3. Góp ý khác (tự do chia sẻ):**  
 Chân thành cảm ơn ban tổ chức và mentor đã đồng hành, hỗ trợ nhiệt tình. Chúc chương trình ngày càng phát triển vững mạnh và mang lại giá trị cho nhiều sinh viên.

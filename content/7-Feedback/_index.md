@@ -45,7 +45,7 @@ Yes, I would. Because this is a professional environment, being closely mentored
 There should be cross-exchanges between project groups and periodic review sessions (1-on-1) for interns to receive feedback to improve.
 
 **2. Would you like to continue this program in the future?**  
-Yes, I wish to continue accompanying to participate in many practical projects and learn more deeply in a corporate environment.
+I'm not sure yet. This will depend on my schedule and other personal plans in the future.
 
 **3. Any other comments (free sharing):**  
 Sincerely thank the organizers and mentors for their companionship and enthusiastic support. Wishing the program to grow stronger and bring value to many students.
