@@ -6,7 +6,7 @@ chapter: false
 pre: " <b> 6. </b> "
 ---
 
-During my internship at **Amazon Web Services Vietnam Co., Ltd.** from **17/04/2026** to **10/07/2026**, I had the opportunity to learn, practice, and apply the knowledge acquired in school to a real-world working environment.
+During my internship at **Amazon Web Services Vietnam Co., Ltd.** from **17/04/2026** to **30/07/2026**, I had the opportunity to learn, practice, and apply the knowledge acquired in school to a real-world working environment.
 
 I participated in the **DocuFlow AI** project, taking on tasks related to frontend development and API integration. Through this process, I enhanced my professional knowledge and improved various skills such as programming, teamwork, communication, and problem-solving.
 

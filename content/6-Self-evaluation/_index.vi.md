@@ -6,7 +6,7 @@ chapter: false
 pre: " <b> 6. </b> "
 ---
 
-Trong suốt thời gian thực tập tại **Công ty TNHH Amazon Web Services Vietnam** từ **17/04/2026** đến **10/07/2026**, tôi đã có cơ hội học hỏi, rèn luyện và áp dụng những kiến thức đã được trang bị tại trường vào môi trường làm việc thực tế.
+Trong suốt thời gian thực tập tại **Công ty TNHH Amazon Web Services Vietnam** từ **17/04/2026** đến **30/07/2026**, tôi đã có cơ hội học hỏi, rèn luyện và áp dụng những kiến thức đã được trang bị tại trường vào môi trường làm việc thực tế.
 
 Trong quá trình thực tập, tôi được tham gia vào dự án **DocuFlow AI**, đảm nhận các công việc liên quan đến phát triển giao diện người dùng, tích hợp API. Thông qua quá trình này, tôi đã nâng cao kiến thức chuyên môn cũng như cải thiện nhiều kỹ năng như: lập trình, làm việc nhóm, giao tiếp và giải quyết vấn đề.
 
