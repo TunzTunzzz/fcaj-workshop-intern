@@ -16,6 +16,9 @@ pre: " <b> 1.12. </b> "
 | --- | --------- | ------------ | --------------- | -------------- |
 | 2   | - Lên dàn ý và cấu trúc nội dung cho Workshop. | 06/07/2026 | 06/07/2026 | |
 | 3   | - Bắt đầu soạn thảo tài liệu hướng dẫn chi tiết. | 07/07/2026 | 07/07/2026 | |
+| 4   | - Hoàn thiện tài liệu hướng dẫn và bắt đầu rà soát báo cáo. | 08/07/2026 | 08/07/2026 | |
+| 5   | - Kiểm tra lỗi chính tả, câu chữ trong tài liệu. | 09/07/2026 | 09/07/2026 | |
+| 6   | - Tối ưu hóa nội dung trình bày. | 10/07/2026 | 10/07/2026 | |
 
 ### Kết quả đạt được tuần 12:
 

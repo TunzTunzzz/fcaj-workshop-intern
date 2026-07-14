@@ -16,6 +16,9 @@ pre: " <b> 1.12. </b> "
 | --- | ---- | ---------- | --------------- | ------------------ |
 | 2   | - Outline and structure the content for the Workshop. | 06/07/2026 | 06/07/2026 | |
 | 3   | - Start drafting the detailed guide. | 07/07/2026 | 07/07/2026 | |
+| 4   | - Finalize the guide documentation and start reviewing the report. | 08/07/2026 | 08/07/2026 | |
+| 5   | - Check spelling and grammar in the documentation. | 09/07/2026 | 09/07/2026 | |
+| 6   | - Optimize presentation content. | 10/07/2026 | 10/07/2026 | |
 
 ### Week 12 Achievements:
 
