@@ -29,3 +29,5 @@ pre: " <b> 1. </b> "
 **Week 11:** [Refine user interface, write Frontend guide and perform Final Demo](1.11-week11/)
 
 **Week 12:** [Write workshop documentation and revise the entire report content](1.12-week12/)
+
+**Week 13:** [Advanced security management with CloudWatch, Secrets Manager, and Firewall Manager](1.13-week13/)

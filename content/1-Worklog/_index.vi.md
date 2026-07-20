@@ -30,3 +30,5 @@ pre: " <b> 1. </b> "
 **Tuần 11:** [Hoàn thiện giao diện, viết Frontend guide và thực hiện Final Demo](1.11-week11/)
 
 **Tuần 12:** [Viết nội dung workshop và chỉnh sửa, rà soát lại toàn bộ tài liệu](1.12-week12/)
+
+**Tuần 13:** [Quản trị bảo mật nâng cao với CloudWatch, Secrets Manager và Firewall Manager](1.13-week13/)
